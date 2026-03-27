@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings - Pharmacy Management</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="settings-container">
+        <h2>Admin Settings / Profile</h2>
+        <div class="current-username">
+            <label>Current Username:</label>
+            <span id="current-username">admin</span>
+        </div>
+        <form id="settings-form" class="settings-form">
+            <div class="form-group">
+                <label for="new-username">New Username:</label>
+                <input type="text" id="new-username" required>
+            </div>
+            <div class="form-group">
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" required minlength="6">
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" required minlength="6">
+            </div>
+            <button type="submit">Save / Update Credentials</button>
+        </form>
+        <div id="success-message" class="success-message" style="display: none;">Credentials updated successfully!</div>
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div class="back-link">
+            <a href="admin-dashboard.html">Back to Dashboard</a>
+        </div>
+    </div>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

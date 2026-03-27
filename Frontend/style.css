@@ -1,0 +1,95 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Top Contact Bar */
+.top-bar {
+    background-color: #248550;
+    color: white;
+    padding: 8px 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+}
+
+header .logo {
+    font-weight: bold;
+    font-size: 20px;
+    color: hwb(147 7% 60%);
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+}
+
+header nav ul li a.cart-btn {
+    background-color: #168045;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 4px;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.hero-img {
+    width: 100%;
+    max-height: 700px;
+    object-fit: cover;
+    opacity: 0.9;
+}
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.hero-text h1 {
+    font-size: 49px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.pharmacy-info p {
+    font-size: 20px;
+    margin: 4px 0;
+    
+}
+
+.heading1 p{
+    font-size:24px;
+    margin:4px 0;
+}
+
+.heading1 p {
+    font-size: 24px;
+    margin: 4px 0;
+}

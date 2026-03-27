@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kavyabhakti Medical Store</title>
+    <link rel="stylesheet" href="CSS/style.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="top-bar">
+            <div class="contact-info">
+                <i class="fas fa-phone"></i> +91 7385032828 / 7385032727
+            </div>
+            <div class="contact-info">
+                <i class="fas fa-envelope"></i> Kavyabhaktimedical@gamil.com
+            </div>
+        </div>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Kavyabhakti Medical Store</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#categories" onclick="showCategories()">Our Products</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+                <li><a href="admin-login.html">Admin Login</a></li>
+                <li><button type="button" onclick="openCartModal()" class="cart-btn">View Cart (<span id="cart-count">0</span>)</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero hero-bg">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h2>Your Trusted Source For Health &amp; Wellness</h2>
+            <a href="#contact" class="contact-btn">Contact Us</a>
+            <div class="pharmacy-info">
+                <div class="pharmacy-time">
+                    <h3>Pharmacy Hours</h3>
+                    <p>Mon-Sat: 9:00 AM - 12:00 AM</p>
+                    <p>Sunday: 9:00 AM - 10:00 PM</p>
+                </div>
+                <div class="pharmacy-address">
+                    <h3>Pharmacy Address</h3>
+                    <p>Near Maruti temple,Aanandwalli ,Gangapur road ,Nashik ,</p>
+                    <p>Maharashtra 422013</p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-arrows">
+            <button type="button" class="arrow left" onclick="slideLeft()">&#10094;</button>
+            <button type="button" class="arrow right" onclick="slideRight()">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- Medicine Categories Section -->
+    <section id="categories" class="categories">
+        <h2>Our Medicine Categories</h2>
+        <button type="button" onclick="showAllMedicines()" class="view-all-btn">View All Medicines</button>
+        <div class="categories-grid">
+            <div class="category-card" onclick="showMedicines('BP Medicines')">
+                <img src="index_images/bp.jpg" alt="BP Medicines">
+                <h3>BP Medicines</h3>
+            </div>
+            <div class="category-card" onclick="showMedicines('Heart Medicines')">
+                <img src="index_images/heart.jpg" alt="Heart Medicines">
+                <h3>Heart Medicines</h3>
+            </div>
+            <div class="category-card" onclick="showMedicines('Diabetes Medicines')">
+                <img src="index_images/diabities.jpg" alt="Diabetes Medicines">
+                <h3>Diabetes Medicines</h3>
+            </div>
+            <div class="category-card" onclick="showMedicines('Pain Relief')">
+                <img src="index_images/pain.jpg" alt="Pain Relief">
+                <h3>Pain Relief</h3>
+            </div>
+            <div class="category-card" onclick="showMedicines('Antibiotics')">
+                <img src="index_images/Antibiotics.jpg" alt="Antibiotics">
+                <h3>Antibiotics</h3>
+            </div>
+            <div class="category-card" onclick="showMedicines('Nutraceuticals')">
+                <img src="index_images/Nutraceuticals.jpg" alt="Nutraceuticals">
+                <h3>Nutraceuticals</h3>
+            </div>
+        </div>
+        <div id="medicines-list" class="medicines-list">
+            <h3 id="category-title">&#8203;</h3>
+            <input type="text" id="search-medicine" placeholder="Search for a medicine..." onkeyup="searchMedicines()">
+            <ul id="medicines-ul"></ul>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="about">
+        <div class="about-container">
+            <div class="about-image">
+                <img src="index_images/Medical.jpg" alt="Lab Technician">
+            </div>
+            <div class="about-text">
+                <h2>Building <span class="highlight">Healthier</span> Futures <span class="highlight">Together</span></h2>
+                <p>Welcome to <strong>KavyaBharti Medical Store</strong>, your trusted neighborhood pharmacy dedicated to providing high-quality medicines and exceptional healthcare services.</p>
+                <p>Our team of experienced pharmacists and healthcare professionals is always ready to provide personalized advice and guidance for all your medical needs.</p>
+                <p>At KavyaBharti Medical Store, we prioritize customer satisfaction and believe in building long-lasting relationships through reliability, transparency, and genuine care.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact" class="contact">
+        <h2>Contact Us</h2>
+        <p>Get in touch for inquiries or orders.</p>
+        <form id="contact-form">
+            <input type="text" id="contact-name" placeholder="Name" required>
+            <input type="email" id="contact-email" placeholder="Email" required>
+            <textarea id="contact-message" placeholder="Message"></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCartModal()">&times;</span>
+            <h2>Your Cart</h2>
+            <div id="cart-items"></div>
+            <div id="cart-total" class="cart-total"></div>
+            <button type="button" onclick="openOrderModal()" class="place-order-btn">Place Order</button>
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div id="order-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOrderModal()">&times;</span>
+            <h2>Place Order</h2>
+            <div id="order-items" class="order-items"></div>
+            <div id="order-total" class="order-total"></div>
+            <form id="order-form">
+                <label for="order-customer-name">Customer Name:</label>
+                <input type="text" id="order-customer-name" required placeholder="Enter your name">
+                <label for="order-phone">Phone Number:</label>
+                <input type="tel" id="order-phone" required placeholder="Enter your phone number">
+                <label for="order-address">Address (Optional):</label>
+                <textarea id="order-address" placeholder="Enter your address"></textarea>
+                <button type="submit">Submit Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Single Order Modal -->
+    <div id="single-order-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSingleOrderModal()">&times;</span>
+            <h2>Order Medicine</h2>
+            <form id="single-order-form">
+                <label for="medicine-name">Medicine:</label>
+                <input type="text" id="medicine-name" readonly>
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" required placeholder="Enter your phone number">
+                <button type="submit">Submit Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Request Modal -->
+    <div id="request-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRequestModal()">&times;</span>
+            <h2>Request Medicine</h2>
+            <form id="request-form">
+                <label for="request-customer-name">Customer Name:</label>
+                <input type="text" id="request-customer-name" required placeholder="Enter your name">
+                <label for="request-phone">Phone Number:</label>
+                <input type="tel" id="request-phone" required placeholder="Enter your phone number">
+                <label for="request-medicine-name">Medicine:</label>
+                <input type="text" id="request-medicine-name" readonly>
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" required placeholder="Enter quantity" min="1">
+                <button type="submit">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Message -->
+    <div id="confirmation-message" class="confirmation-message" style="display: none;">
+        Request submitted successfully!
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

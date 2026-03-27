@@ -1,0 +1,1136 @@
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #2c5033;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background-color: #34495e;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+/* Forms */
+form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+form input,
+form select,
+form textarea {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex: 1;
+    min-width: 200px;
+}
+
+form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+form button {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #218838;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.action-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #218838;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+.complete-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.complete-btn:hover {
+    background-color: #218838;
+}
+
+.status-select {
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* Admin Settings */
+.settings-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.settings-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1e7e34;
+    font-size: 28px;
+}
+
+.current-username {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+.current-username label {
+    font-weight: bold;
+    color: #1e7e34;
+}
+
+.current-username span {
+    color: #1e7e34;
+    font-weight: bold;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-form .form-group {
+    margin-bottom: 20px;
+}
+
+.settings-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.settings-form input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #0b0202;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.settings-form input:focus {
+    outline: none;
+    border-color: #1e7e34;
+}
+
+.settings-form button {
+    background-color: #1e7e34;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.settings-form button:hover {
+    background-color: #155724;
+}
+
+.success-message {
+    color: #28a745;
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.error-message {
+    color: #dc3545;
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.back-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-link a {
+    color: #1e7e34;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
+
+/* Admin Login */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: url('index_images/abc1.jpg') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+    height: 100vh;
+}
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+.login-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 400px;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    color: white;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid white;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: black;
+    font-size: 16px;
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: white;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.login-container button:hover {
+    background-color: #f0f0f0;
+}
+
+.error-message {
+    color: #ffcccc;
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+/* Admin Dashboard */
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #1e7e34;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+    color: white;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background-color: #155724;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: white;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+/* Forms */
+form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+form input,
+form select,
+form textarea {
+    padding: 8px;
+    border: 1px solid #110505;
+    border-radius: 4px;
+    flex: 1;
+    min-width: 200px;
+}
+
+form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+form button {
+    background-color: #1e7e34;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #155724;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.action-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.edit-btn {
+    background-color: #f39c12;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #e67e22;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.complete-btn {
+    background-color: #27ae60;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.complete-btn:hover {
+    background-color: #229954;
+}
+
+.status-select {
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* Search Container */
+.search-container {
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.search-container input:focus {
+    outline: none;
+    border-color: #1e7e34;
+}
+
+/* Expiry Warning - medicines expiring within 30 days */
+.expiry-warning {
+    background-color: #ffcccc !important;
+    color: #cc0000;
+    font-weight: bold;
+}
+
+.expiry-warning:hover {
+    background-color: #ffb3b3 !important;
+}
+
+/* Sortable Column */
+.sortable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.sortable:hover {
+    background-color: #e0e0e0;
+}
+
+.sort-icon {
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+/* Availability Status */
+.available {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.not-available {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Table Improvements */
+#medicines-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+#medicines-table {
+    font-size: 14px;
+}
+
+#medicines-table th {
+    white-space: nowrap;
+}
+
+/* Billing Management Styles */
+.billing-tabs {
+    margin-bottom: 20px;
+}
+
+.billing-tab-btn {
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.billing-tab-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.billing-tab-btn.active {
+    background-color: #1e7e34;
+    color: white;
+}
+
+.billing-tab-content {
+    display: none;
+}
+
+.billing-tab-content.active {
+    display: block;
+}
+
+.billing-customer-info {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.billing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.billing-header h3 {
+    margin: 0;
+    color: #1e7e34;
+}
+
+.bill-details {
+    display: flex;
+    gap: 20px;
+}
+
+.bill-detail {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.bill-detail label {
+    font-weight: bold;
+    color: #333;
+}
+
+.bill-detail span {
+    color: #1e7e34;
+    font-weight: bold;
+}
+
+.customer-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.form-group-billing {
+    flex: 1;
+    min-width: 200px;
+}
+
+.form-group-billing label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group-billing input,
+.form-group-billing select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.form-group-billing input:focus,
+.form-group-billing select:focus {
+    outline: none;
+    border-color: #1e7e34;
+}
+
+.medicine-selection {
+    margin-bottom: 20px;
+}
+
+.medicine-selection h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.medicine-search-box {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.medicine-search-box input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.medicine-search-box input:focus {
+    outline: none;
+    border-color: #1e7e34;
+}
+
+.medicine-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.medicine-suggestions.show {
+    display: block;
+}
+
+.medicine-suggestion-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s ease;
+}
+
+.medicine-suggestion-item:hover {
+    background-color: #f5f5f5;
+}
+
+.medicine-suggestion-item .medicine-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.medicine-suggestion-item .medicine-brand {
+    color: #666;
+    font-size: 12px;
+}
+
+.medicine-suggestion-item .medicine-category {
+    color: #1e7e34;
+    font-size: 12px;
+}
+
+.selected-medicines-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.selected-medicine-tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #e8f5e9;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #1e7e34;
+}
+
+.selected-medicine-tag .remove-medicine {
+    cursor: pointer;
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.billing-table-container {
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+#billing-table {
+    width: 100%;
+    min-width: 700px;
+}
+
+#billing-table th {
+    background-color: #1e7e34;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+#billing-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+#billing-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+#billing-table input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.empty-row td {
+    color: #999;
+    font-style: italic;
+}
+
+.billing-summary {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-bottom: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+}
+
+.summary-row.total {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1e7e34;
+    border-top: 2px solid #1e7e34;
+    margin-top: 10px;
+    padding-top: 15px;
+}
+
+.summary-row input {
+    width: 80px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: right;
+}
+
+.billing-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.billing-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.generate-btn {
+    background-color: #1e7e34;
+    color: white;
+}
+
+.generate-btn:hover {
+    background-color: #155724;
+}
+
+.save-btn {
+    background-color: #f39c12;
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: #e67e22;
+}
+
+.print-btn {
+    background-color: #3498db;
+    color: white;
+}
+
+.print-btn:hover {
+    background-color: #2980b9;
+}
+
+.download-btn {
+    background-color: #9b59b6;
+    color: white;
+}
+
+.download-btn:hover {
+    background-color: #8e44ad;
+}
+
+.clear-btn {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.clear-btn:hover {
+    background-color: #7f8c8d;
+}
+
+#billing-history-table {
+    width: 100%;
+}
+
+#billing-history-table th {
+    background-color: #34495e;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+#billing-history-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+#billing-history-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.view-btn, .print-history-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.view-btn {
+    background-color: #3498db;
+    color: white;
+}
+
+.print-history-btn {
+    background-color: #27ae60;
+    color: white;
+}
+
+/* Reports Section Styles */
+.report-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    align-items: center;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group label {
+    font-weight: bold;
+    color: #333;
+}
+
+.filter-group select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    min-width: 120px;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: #1e7e34;
+}
+
+.report-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.generate-report-btn {
+    background-color: #1e7e34;
+    color: white;
+}
+
+.generate-report-btn:hover {
+    background-color: #155724;
+}
+
+.report-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.report-btn.pdf-btn {
+    background-color: #9b59b6;
+    color: white;
+}
+
+.report-btn.pdf-btn:hover {
+    background-color: #8e44ad;
+}
+
+.report-btn.print-btn {
+    background-color: #3498db;
+    color: white;
+}
+
+.report-btn.print-btn:hover {
+    background-color: #2980b9;
+}
+
+.report-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+    transition: transform 0.2s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.summary-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.summary-card p {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #1e7e34;
+}
+
+.summary-card.highlight {
+    background-color: #1e7e34;
+    border-color: #1e7e34;
+}
+
+.summary-card.highlight h3 {
+    color: rgba(255,255,255,0.8);
+}
+
+.summary-card.highlight p {
+    color: white;
+}
+
+.report-table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+#report-table {
+    width: 100%;
+    min-width: 900px;
+}
+
+#report-table th {
+    background-color: #34495e;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+#report-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+#report-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+#report-table .profit-positive {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+#report-table .profit-negative {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+
+/* ── Utility classes replacing inline styles ── */
+.table-empty-msg {
+    text-align: center;
+    padding: 20px;
+}
+
+.report-header-hidden {
+    display: none;
+}
+
+.report-header {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #1e7e34, #28a745);
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+}

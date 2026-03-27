@@ -1,0 +1,690 @@
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+}
+
+/* Header */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Top Bar */
+.top-bar {
+  background-color: #28a745; /* Green */
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.contact-info {
+  display: flex;
+  align-items: center;
+}
+
+.contact-info i {
+  margin-right: 8px;
+}
+
+/* Navigation Bar */
+.navbar {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo h1 {
+  color: #28a745;
+  font-size: 24px;
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.nav-menu li {
+  margin-left: 20px;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.nav-menu a:hover {
+  color: #28a745;
+}
+
+.cart-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.cart-btn:hover {
+  background-color: #218838;
+}
+
+/* Dropdown */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  list-style: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+}
+
+.dropdown-menu li {
+  margin: 0;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f8f9fa;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  height: 100vh;
+  background-image: url("../index_images/abc1.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* hero-bg used in HTML to avoid inline style */
+.hero-bg {
+  background-image: url("../index_images/abc1.jpg");
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  padding: 0 20px;
+}
+
+.hero-content h2 {
+  font-size: 48px;
+  color: white;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.pharmacy-info {
+  position: relative;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pharmacy-time h3 {
+  font-weight: bold;
+  font-size: 28px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.pharmacy-time p {
+  font-size: 18px;
+  color: white;
+  margin: 5px 0;
+}
+
+.pharmacy-holiday h3 {
+  font-weight: bold;
+  font-size: 28px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.pharmacy-holiday p {
+  font-size: 18px;
+  color: white;
+  margin: 5px 0;
+}
+
+.pharmacy-address {
+  margin-top: 20px;
+}
+
+.pharmacy-address h3 {
+  font-weight: bold;
+  font-size: 28px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.pharmacy-address p {
+  font-size: 18px;
+  color: white;
+  margin: 5px 0;
+}
+
+.contact-btn {
+  position: relative;
+  background-color: #28a745;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.contact-btn:hover {
+  background-color: #218838;
+}
+
+/* Carousel Arrows */
+.carousel-arrows {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+
+.arrow {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.arrow:hover {
+  background-color: white;
+}
+
+/* Categories Section */
+.categories {
+  padding: 50px 20px;
+  background-color: #f8f9fa;
+  text-align: center;
+}
+
+.categories h2 {
+  margin-bottom: 30px;
+  color: #28a745;
+}
+
+.view-all-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  transition: background-color 0.3s;
+}
+
+.view-all-btn:hover {
+  background-color: #218838;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.category-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.category-card img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 15px;
+}
+
+.category-card h3 {
+  color: #28a745;
+}
+
+/* Medicines List */
+.medicines-list {
+  margin-top: 30px;
+  text-align: left;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block; /* Visible by default */
+}
+
+.medicines-list input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+mark {
+  background-color: #ffc107;
+  color: #000;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.medicines-list ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.medicine-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+  margin-bottom: 20px;
+}
+
+.medicine-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.medicine-card img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.medicine-card h4 {
+  margin-bottom: 10px;
+  color: #28a745;
+}
+
+.medicine-card .brand {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.medicine-card .description {
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.medicine-card .availability {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.order-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.order-btn:hover {
+  background-color: #218838;
+}
+
+.request-btn {
+  background-color: #ffc107;
+  color: #333;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.request-btn:hover {
+  background-color: #e0a800;
+}
+
+/* About Us Section */
+.about {
+  padding: 50px 20px;
+  background-color: white;
+}
+
+.about-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.about-image {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.about-image img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.about-text {
+  flex: 1;
+  padding-left: 20px;
+}
+
+.about-text h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.highlight {
+  color: #28a745;
+}
+
+/* Contact Us Section */
+.contact {
+  padding: 50px 20px;
+  background-color: #f8f9fa;
+  text-align: center;
+}
+
+.contact h2 {
+  margin-bottom: 10px;
+  color: #28a745;
+}
+
+.contact p {
+  margin-bottom: 30px;
+}
+
+.contact form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact input,
+.contact textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.contact button {
+  background-color: #28a745;
+  color: white;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.contact button:hover {
+  background-color: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-menu {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .nav-menu li {
+    margin: 5px 0;
+  }
+
+  .hero-content h2 {
+    font-size: 36px;
+  }
+
+  .pharmacy-info {
+    margin-left: 10px;
+  }
+
+  .pharmacy-time h3,
+  .pharmacy-holiday h3 {
+    font-size: 20px;
+  }
+
+  .pharmacy-time p,
+  .pharmacy-holiday p {
+    font-size: 14px;
+  }
+
+  .hero-content {
+    margin-left: 20px;
+  }
+
+  .about-container {
+    flex-direction: column;
+  }
+
+  .about-image,
+  .about-text {
+    flex: none;
+    width: 100%;
+    padding: 0;
+  }
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: #28a745;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.modal-content input {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.modal-content button {
+  background-color: #28a745;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modal-content button:hover {
+  background-color: #218838;
+}
+
+/* Confirmation Message */
+.confirmation-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1001;
+    font-weight: bold;
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #218838;
+}
+
+/* Quantity Container */
+.quantity-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.quantity-label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.quantity-input {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Medicine Card Full Width Display */
+.medicines-list .medicine-card {
+    width: 100%;
+}
+
+.medicines-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.medicines-list ul li {
+    list-style: none;
+}
