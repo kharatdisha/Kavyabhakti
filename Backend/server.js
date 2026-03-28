@@ -12,7 +12,7 @@ const allowedOrigins = process.env.FRONTEND_URL
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin) return callback(null, true); // Postman / curl
-        if (allowedOrigins.includes(origin)) return callback(null, true);
+        if (allowedOrigins.some(o => origin.startsWith(o))) return callback(null, true);
         callback(new Error('Not allowed by CORS'));
     },
     credentials: true
