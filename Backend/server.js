@@ -7,18 +7,16 @@ const PORT = process.env.PORT || 3000;
 // CORS — restrict to frontend origin in production
 const allowedOrigins = process.env.FRONTEND_URL
     ? process.env.FRONTEND_URL.split(',').map(o => o.trim())
-    : ['http://localhost:5500', 'http://127.0.0.1:5500', 'http://localhost:3000'];
+    : ['http://localhost:5500'];
 
 app.use(cors({
     origin: (origin, callback) => {
-        // Allow requests with no origin (mobile apps, curl, Postman)
-        if (!origin) return callback(null, true);
+        if (!origin) return callback(null, true); // Postman / curl
         if (allowedOrigins.includes(origin)) return callback(null, true);
         callback(new Error('Not allowed by CORS'));
     },
     credentials: true
 }));
-
 // Limit JSON body size to prevent abuse
 app.use(express.json({ limit: '1mb' }));
 
@@ -56,3 +54,5 @@ db.getConnection()
         console.error('❌ MySQL connection failed:', err.message);
         process.exit(1);
     });
+
+    
