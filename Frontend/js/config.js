@@ -7,5 +7,5 @@
 const CONFIG = {
   // ⚠️ PRODUCTION: Change API_BASE to your deployed backend URL
   // Example: 'https://your-app.onrender.com/api'
-    API_BASE: 'http://localhost:3000/api'
+    API_BASE: 'https://kavyabhakti-backend.onrender.com'
 };
