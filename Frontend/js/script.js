@@ -82,13 +82,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     // Contact form
-    const contactForm = document.getElementById('contact-form');
+    const contactForm = document.querySelector('#contact form');
     if (contactForm) {
         contactForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            const name = document.getElementById('contact-name').value;
-            const email = document.getElementById('contact-email').value;
-            const message = document.getElementById('contact-message').value;
+            const name = contactForm.querySelector('input[type="text"]').value;
+            const email = contactForm.querySelector('input[type="email"]').value;
+            const message = contactForm.querySelector('textarea').value;
             try {
                 await apiSendContact(name, email, message);
                 alert('Message sent successfully!');

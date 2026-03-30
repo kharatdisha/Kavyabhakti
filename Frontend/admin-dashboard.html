@@ -7,353 +7,343 @@
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-<div class="dashboard">
-    <div class="sidebar">
-        <h2>Admin Dashboard</h2>
-        <a href="#" onclick="showSection('medicine-management')" class="active">Medicine Management</a>
-        <a href="#" onclick="showSection('orders-management')">Orders Management</a>
-        <a href="#" onclick="showSection('requests-management')">Requests Management</a>
-        <a href="#" onclick="showSection('billing-management')">Billing Management</a>
-        <a href="#" onclick="showSection('reports-section')">Reports</a>
-    </div>
-    <div class="main-content">
-
-        <!-- Medicine Management -->
-        <div id="medicine-management" class="section active">
-            <h2>Medicine Management</h2>
-            <form id="add-medicine-form" onsubmit="addMedicine(event)">
-                <input type="text" id="medicine-name" placeholder="Medicine Name" required>
-                <input type="text" id="brand-name" placeholder="Brand Name" required>
-                <select id="medicine-category" required>
-                    <option value="">Select Category</option>
-                    <option value="1">BP Medicines</option>
-                    <option value="2">Heart Medicines</option>
-                    <option value="3">Diabetes Medicines</option>
-                    <option value="4">Pain Relief</option>
-                    <option value="5">Antibiotics</option>
-                    <option value="6">Nutraceuticals</option>
-                    <option value="7">Antidiabetic</option>
-                    <option value="8">Antiviral</option>
-                    <option value="9">Antibiotic</option>
-                    <option value="10">Antifungal</option>
-                    <option value="11">Antipyretic</option>
-                    <option value="12">Antidepressant</option>
-                    <option value="13">Analgesic</option>
-                    <option value="14">Antiseptic</option>
-                </select>
-                <input type="number" id="purchase-price" placeholder="Purchase Price" step="0.01" min="0" required>
-                <input type="number" id="selling-price" placeholder="Selling Price" step="0.01" min="0" required>
-                <input type="number" id="gst-percent" placeholder="GST %" step="0.1" min="0" max="28" value="5" required>
-                <input type="date" id="expiry-date" required>
-                <input type="text" id="location" placeholder="Location (e.g., Shelf A1)" required>
-                <input type="number" id="stock-quantity" placeholder="Stock Quantity" min="0" required>
-                <button type="submit">Add Medicine</button>
-            </form>
-            <div class="search-container">
-                <input type="text" id="medicine-search" placeholder="Search medicines by Name, Brand, or Category..." onkeyup="searchMedicines()">
-            </div>
-            <table id="medicines-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Brand</th>
-                        <th scope="col">Purchase Price</th>
-                        <th scope="col">Selling Price</th>
-                        <th scope="col">GST %</th>
-                        <th scope="col" onclick="sortByExpiryDate()" class="sortable">Expiry Date <span class="sort-icon">&#8597;</span></th>
-                        <th scope="col">Location</th>
-                        <th scope="col">Stock</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+    <div class="dashboard">
+        <div class="sidebar">
+            <h2>Admin Dashboard</h2>
+            <a href="#" onclick="showSection('medicine-management')" class="active">Medicine Management</a>
+            <a href="#" onclick="showSection('orders-management')">Orders Management</a>
+            <a href="#" onclick="showSection('requests-management')">Requests Management</a>
+            <a href="#" onclick="showSection('billing-management')">Billing Management</a>
+            <a href="#" onclick="showSection('reports-section')">Reports</a>
         </div>
+        <div class="main-content">
 
-        <!-- Orders Management -->
-        <div id="orders-management" class="section">
-            <h2>Orders Management</h2>
-            <table id="orders-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Customer Name</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Medicines</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+            <!-- ── Medicine Management ── -->
+            <div id="medicine-management" class="section active">
+                <h2>Medicine Management</h2>
 
-        <!-- Requests Management -->
-        <div id="requests-management" class="section">
-            <h2>Requests Management</h2>
-            <table id="requests-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Customer Name</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Medicine</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+                <form id="add-medicine-form" onsubmit="addMedicine(event)">
+                    <input type="text" id="medicine-name" placeholder="Medicine Name" required>
+                    <input type="text" id="brand-name" placeholder="Brand Name" required>
+                    <select id="medicine-category" required>
+                        <option value="">Select Category</option>
+                    </select>
+                    <input type="number" id="purchase-price" placeholder="Purchase Price" step="0.01" min="0" required>
+                    <input type="number" id="selling-price" placeholder="Selling Price" step="0.01" min="0" required>
+                    <input type="number" id="gst-percent" placeholder="GST %" step="0.1" min="0" max="28" value="5" required>
+                    <input type="date" id="expiry-date" required>
+                    <input type="text" id="location" placeholder="Location (e.g., Shelf A1)" required>
+                    <input type="number" id="stock-quantity" placeholder="Stock Quantity" min="0" required>
+                    <button type="submit">Add Medicine</button>
+                </form>
 
-        <!-- Billing Management -->
-        <div id="billing-management" class="section">
-            <h2>Billing Management</h2>
-            <div class="billing-tabs">
-                <button type="button" class="billing-tab-btn active" onclick="showBillingTab('new-billing')">New Bill</button>
-                <button type="button" class="billing-tab-btn" onclick="showBillingTab('billing-history')">Billing History</button>
+                <div class="medicine-filter-bar">
+                    <input type="text" id="medicine-search" class="medicine-search-input" placeholder="Search by Name, Brand or Category..." onkeyup="searchMedicines()">
+                    <select id="category-filter" class="category-filter-select" onchange="filterByCategory()">
+                        <option value="">All Categories</option>
+                    </select>
+                    <button type="button" class="btn-reset" onclick="resetMedicineFilters()">Reset</button>
+                </div>
+
+                <div id="medicine-stats" class="medicine-stats"></div>
+
+                <table id="medicines-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Purchase ₹</th>
+                            <th scope="col">Selling ₹</th>
+                            <th scope="col">GST %</th>
+                            <th scope="col" class="sortable" onclick="sortByExpiryDate()">Expiry Date <span class="sort-icon">↕</span></th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
 
-            <!-- New Bill Tab -->
-            <div id="new-billing" class="billing-tab-content active">
-                <div class="billing-customer-info">
-                    <div class="billing-header">
-                        <h3>Create New Bill</h3>
-                        <div class="bill-details">
-                            <div class="bill-detail">
-                                <label>Bill ID:</label>
-                                <span id="bill-id">BILL001</span>
+            <!-- ── Orders Management ── -->
+            <div id="orders-management" class="section">
+                <h2>Orders Management</h2>
+                <table id="orders-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Medicines</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- ── Requests Management ── -->
+            <div id="requests-management" class="section">
+                <h2>Requests Management</h2>
+                <table id="requests-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Medicine</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- ── Billing Management ── -->
+            <div id="billing-management" class="section">
+                <h2>Billing Management</h2>
+
+                <div class="billing-tabs">
+                    <button type="button" class="billing-tab-btn active" onclick="showBillingTab('new-billing')">New Bill</button>
+                    <button type="button" class="billing-tab-btn" onclick="showBillingTab('billing-history')">Billing History</button>
+                </div>
+
+                <div id="new-billing" class="billing-tab-content active">
+                    <div class="billing-customer-info">
+                        <div class="billing-header">
+                            <h3>Create New Bill</h3>
+                            <div class="bill-details">
+                                <div class="bill-detail">
+                                    <label>Bill ID:</label>
+                                    <span id="bill-id">BILL001</span>
+                                </div>
+                                <div class="bill-detail">
+                                    <label>Billing Date:</label>
+                                    <span id="billing-date"></span>
+                                </div>
                             </div>
-                            <div class="bill-detail">
-                                <label>Billing Date:</label>
-                                <span id="billing-date"></span>
+                        </div>
+
+                        <div class="customer-form">
+                            <div class="form-group-billing">
+                                <label>Customer Name:</label>
+                                <input type="text" id="customer-name" placeholder="Enter customer name">
+                            </div>
+                            <div class="form-group-billing">
+                                <label>Phone Number:</label>
+                                <input type="tel" id="customer-phone" placeholder="Enter phone number">
+                            </div>
+                            <div class="form-group-billing">
+                                <label>Payment Method:</label>
+                                <select id="payment-method">
+                                    <option value="Cash">Cash</option>
+                                    <option value="UPI">UPI</option>
+                                    <option value="Card">Card</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <div class="customer-form">
-                        <div class="form-group-billing">
-                            <label for="customer-name">Customer Name:</label>
-                            <input type="text" id="customer-name" placeholder="Enter customer name">
+
+                    <div class="medicine-selection">
+                        <h3>Add Medicines</h3>
+                        <div class="medicine-search-box">
+                            <input type="text" id="medicine-search-billing" placeholder="Search medicines by Name, Brand, or Category..." onkeyup="searchMedicinesForBilling()">
+                            <div id="medicine-suggestions" class="medicine-suggestions"></div>
                         </div>
-                        <div class="form-group-billing">
-                            <label for="customer-phone">Phone Number:</label>
-                            <input type="tel" id="customer-phone" placeholder="Enter phone number">
+                    </div>
+
+                    <div class="billing-table-container">
+                        <table id="billing-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Medicine Name</th>
+                                    <th scope="col">Brand</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Price per Unit</th>
+                                    <th scope="col">Expiry Date</th>
+                                    <th scope="col">Total Price</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="billing-table-body">
+                                <tr class="empty-row">
+                                    <td colspan="7" class="empty-cell">No medicines added yet. Search and add medicines above.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="billing-summary">
+                        <div class="summary-row">
+                            <span>Total Medicines Purchased:</span>
+                            <span id="total-medicines">0</span>
                         </div>
-                        <div class="form-group-billing">
-                            <label for="payment-method">Payment Method:</label>
-                            <select id="payment-method">
-                                <option value="Cash">Cash</option>
-                                <option value="UPI">UPI</option>
-                                <option value="Card">Card</option>
-                            </select>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">₹0</span>
                         </div>
+                        <div class="summary-row">
+                            <span>Discount:</span>
+                            <input type="number" id="discount" value="0" min="0" onchange="updateBillingSummary()">
+                        </div>
+                        <div class="summary-row">
+                            <span>GST (5%):</span>
+                            <span id="gst">₹0</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Final Total:</span>
+                            <span id="final-total">₹0</span>
+                        </div>
+                    </div>
+
+                    <div class="billing-actions">
+                        <button type="button" class="billing-btn generate-btn" onclick="generateBill()">Generate Bill</button>
+                        <button type="button" class="billing-btn save-btn" onclick="saveBill()">Save Bill</button>
+                        <button type="button" class="billing-btn print-btn" onclick="printInvoice()">Print Invoice</button>
+                        <button type="button" class="billing-btn download-btn" onclick="downloadPDF()">Download PDF</button>
+                        <button type="button" class="billing-btn clear-btn" onclick="clearBillingForm()">Clear</button>
                     </div>
                 </div>
 
-                <div class="medicine-selection">
-                    <h3>Add Medicines</h3>
-                    <div class="medicine-search-box">
-                        <input type="text" id="medicine-search-billing" placeholder="Search medicines by Name, Brand, or Category..." onkeyup="searchMedicinesForBilling()">
-                        <div id="medicine-suggestions" class="medicine-suggestions"></div>
-                    </div>
-                    <div id="selected-medicines-list" class="selected-medicines-list"></div>
-                </div>
-
-                <div class="billing-table-container">
-                    <table id="billing-table">
+                <div id="billing-history" class="billing-tab-content">
+                    <h3>Billing History</h3>
+                    <table id="billing-history-table">
                         <thead>
                             <tr>
-                                <th scope="col">Medicine Name</th>
-                                <th scope="col">Brand</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Price per Unit</th>
-                                <th scope="col">Expiry Date</th>
-                                <th scope="col">Total Price</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Bill ID</th>
+                                <th scope="col">Customer Name</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Medicines</th>
+                                <th scope="col">Total Amount</th>
+                                <th scope="col">Payment</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="billing-table-body">
-                            <tr class="empty-row">
-                                <td colspan="7" class="table-empty-msg">No medicines added yet. Search and add medicines above.</td>
+                        <tbody id="billing-history-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ── Reports ── -->
+            <div id="reports-section" class="section">
+                <h2>Monthly Reports</h2>
+
+                <div class="report-filters">
+                    <div class="filter-group">
+                        <label for="report-start-month">Start Month:</label>
+                        <select id="report-start-month">
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="report-end-month">End Month:</label>
+                        <select id="report-end-month">
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="report-year">Year:</label>
+                        <select id="report-year">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                        </select>
+                    </div>
+                    <button type="button" class="report-btn generate-report-btn" onclick="generateMonthlyReport()">Generate Report</button>
+                </div>
+
+                <div class="report-header report-header-hidden" id="report-header">
+                    <h3 id="report-title">Medical Store Sales Report</h3>
+                    <p id="report-period"></p>
+                </div>
+
+                <div class="report-actions">
+                    <button type="button" class="report-btn pdf-btn" onclick="downloadReportPDF()">Download PDF</button>
+                    <button type="button" class="report-btn print-btn" onclick="printReport()">Print Report</button>
+                </div>
+
+                <div class="report-summary-cards">
+                    <div class="summary-card">
+                        <h3>Total Bills</h3>
+                        <p id="report-total-bills">0</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Medicines Sold</h3>
+                        <p id="report-medicines-sold">0</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Revenue</h3>
+                        <p id="report-revenue">₹0</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>GST Collected</h3>
+                        <p id="report-gst">₹0</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Purchase Cost</h3>
+                        <p id="report-purchase-cost">₹0</p>
+                    </div>
+                    <div class="summary-card highlight">
+                        <h3>Total Profit</h3>
+                        <p id="report-profit">₹0</p>
+                    </div>
+                </div>
+
+                <div class="report-table-container">
+                    <table id="report-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Bill ID</th>
+                                <th scope="col">Customer Name</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Medicines</th>
+                                <th scope="col">Revenue</th>
+                                <th scope="col">GST</th>
+                                <th scope="col">Purchase Cost</th>
+                                <th scope="col">Profit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="report-table-body">
+                            <tr>
+                                <td colspan="8" class="empty-cell">Select month and year, then click Generate Report to view data.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <div class="billing-summary">
-                    <div class="summary-row">
-                        <span>Total Medicines Purchased:</span>
-                        <span id="total-medicines">0</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">&#8377;0</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Discount:</span>
-                        <input type="number" id="discount" value="0" min="0" onchange="updateBillingSummary()">
-                    </div>
-                    <div class="summary-row">
-                        <span>GST (5%):</span>
-                        <span id="gst">&#8377;0</span>
-                    </div>
-                    <div class="summary-row total">
-                        <span>Final Total:</span>
-                        <span id="final-total">&#8377;0</span>
-                    </div>
-                </div>
-
-                <div class="billing-actions">
-                    <button type="button" class="billing-btn generate-btn" onclick="generateBill()">Generate Bill</button>
-                    <button type="button" class="billing-btn save-btn" onclick="saveBill()">Save Bill</button>
-                    <button type="button" class="billing-btn print-btn" onclick="printInvoice()">Print Invoice</button>
-                    <button type="button" class="billing-btn download-btn" onclick="downloadPDF()">Download PDF</button>
-                    <button type="button" class="billing-btn clear-btn" onclick="clearBillingForm()">Clear</button>
-                </div>
             </div>
 
-            <!-- Billing History Tab -->
-            <div id="billing-history" class="billing-tab-content">
-                <h3>Billing History</h3>
-                <table id="billing-history-table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Bill ID</th>
-                            <th scope="col">Customer Name</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Medicines</th>
-                            <th scope="col">Total Amount</th>
-                            <th scope="col">Payment</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="billing-history-body"></tbody>
-                </table>
-            </div>
         </div>
-
-        <!-- Reports Section -->
-        <div id="reports-section" class="section">
-            <h2>Monthly Reports</h2>
-            <div class="report-filters">
-                <div class="filter-group">
-                    <label for="report-start-month">Start Month:</label>
-                    <select id="report-start-month">
-                        <option value="01">January</option>
-                        <option value="02">February</option>
-                        <option value="03">March</option>
-                        <option value="04">April</option>
-                        <option value="05">May</option>
-                        <option value="06">June</option>
-                        <option value="07">July</option>
-                        <option value="08">August</option>
-                        <option value="09">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="report-start-year">Start Year:</label>
-                    <select id="report-start-year">
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="report-end-month">End Month:</label>
-                    <select id="report-end-month">
-                        <option value="01">January</option>
-                        <option value="02">February</option>
-                        <option value="03">March</option>
-                        <option value="04">April</option>
-                        <option value="05">May</option>
-                        <option value="06">June</option>
-                        <option value="07">July</option>
-                        <option value="08">August</option>
-                        <option value="09">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="report-end-year">End Year:</label>
-                    <select id="report-end-year">
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                    </select>
-                </div>
-                <button type="button" class="report-btn generate-report-btn" onclick="generateMonthlyReport()">Generate Report</button>
-            </div>
-
-            <div class="report-header report-header-hidden" id="report-header">
-                <h3 id="report-title">Medical Store Sales Report</h3>
-                <p id="report-period"></p>
-            </div>
-
-            <div class="report-actions">
-                <button type="button" class="report-btn pdf-btn" onclick="downloadReportPDF()">Download PDF</button>
-                <button type="button" class="report-btn print-btn" onclick="printReport()">Print Report</button>
-            </div>
-
-            <div class="report-summary-cards">
-                <div class="summary-card">
-                    <h3>Total Bills</h3>
-                    <p id="report-total-bills">0</p>
-                </div>
-                <div class="summary-card">
-                    <h3>Medicines Sold</h3>
-                    <p id="report-medicines-sold">0</p>
-                </div>
-                <div class="summary-card">
-                    <h3>Revenue</h3>
-                    <p id="report-revenue">&#8377;0</p>
-                </div>
-                <div class="summary-card">
-                    <h3>GST Collected</h3>
-                    <p id="report-gst">&#8377;0</p>
-                </div>
-                <div class="summary-card">
-                    <h3>Purchase Cost</h3>
-                    <p id="report-purchase-cost">&#8377;0</p>
-                </div>
-                <div class="summary-card highlight">
-                    <h3>Total Profit</h3>
-                    <p id="report-profit">&#8377;0</p>
-                </div>
-            </div>
-
-            <div class="report-table-container">
-                <table id="report-table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Bill ID</th>
-                            <th scope="col">Customer Name</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Medicines</th>
-                            <th scope="col">Revenue</th>
-                            <th scope="col">GST</th>
-                            <th scope="col">Purchase Cost</th>
-                            <th scope="col">Profit</th>
-                        </tr>
-                    </thead>
-                    <tbody id="report-table-body">
-                        <tr>
-                            <td colspan="8" class="table-empty-msg">Select month and year, then click Generate Report to view data.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
-</div>
-<script src="js/config.js"></script>
-<script src="js/api.js"></script>
-<script src="admin.js"></script>
-<script>initDashboard();</script>
+    <script src="js/api.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        initDashboard();
+    </script>
 </body>
 </html>

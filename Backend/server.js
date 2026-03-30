@@ -1,35 +1,21 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const db = require('./db'); // Make sure db.js is setup
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Parse allowed origins from .env
-const allowedOrigins = process.env.FRONTEND_URL
-  ? process.env.FRONTEND_URL.split(',').map(o => o.trim())
-  : [];
+// Connect to MongoDB
+require('./db');
 
-// CORS middleware
+// CORS — allow only the configured frontend origin
 app.use(cors({
-  origin: (origin, callback) => {
-    console.log("Incoming origin:", origin);
-    console.log("Allowed origins:", allowedOrigins);
-
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    console.log("Blocked by CORS:", origin);
-    return callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true
+    origin: process.env.FRONTEND_URL || 'http://localhost:5500',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// JSON parser with body limit
-app.use(express.json({ limit: '1mb' }));
+app.use(express.json());
 
 // Routes
 app.use('/api/auth',      require('./routes/auth'));
@@ -41,26 +27,16 @@ app.use('/api/reports',   require('./routes/reports'));
 app.use('/api/contact',   require('./routes/contact'));
 
 // Health check
-app.get('/', (req, res) => {
-  res.json({ status: 'Kavyabhakti Medical Store API is running.' });
+app.get('/', (_req, res) => {
+    res.json({ status: 'Kavyabhakti Medical Store API is running.' });
 });
 
 // Global error handler
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(err.status || 500).json({
-    error: process.env.NODE_ENV === 'production' ? 'Internal server error.' : err.message
-  });
+app.use((err, _req, res, _next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Internal server error.' });
 });
 
-// Start server after testing DB connection
-db.getConnection()
-  .then(conn => {
-    console.log('✅ MySQL connected successfully.');
-    conn.release();
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-  })
-  .catch(err => {
-    console.error('❌ MySQL connection failed:', err.message);
-    process.exit(1);
-  });
+app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+});

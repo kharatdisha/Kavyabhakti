@@ -1116,12 +1116,71 @@ table th {
 }
 
 
-/* ── Utility classes replacing inline styles ── */
-.table-empty-msg {
-    text-align: center;
-    padding: 20px;
+/* ── Medicine filter bar ── */
+.medicine-filter-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 16px 0;
 }
 
+.medicine-search-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.medicine-search-input:focus {
+    outline: none;
+    border-color: #1e7e34;
+}
+
+.category-filter-select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    min-width: 160px;
+}
+
+.category-filter-select:focus {
+    outline: none;
+    border-color: #1e7e34;
+}
+
+.btn-reset {
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: #6c757d;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn-reset:hover {
+    background: #5a6268;
+}
+
+/* ── Medicine stats bar ── */
+.medicine-stats {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* ── Empty table cell ── */
+.empty-cell {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-style: italic;
+}
+
+/* ── Report header (hidden by default, shown via JS) ── */
 .report-header-hidden {
     display: none;
 }
@@ -1133,4 +1192,10 @@ table th {
     color: white;
     border-radius: 8px;
     text-align: center;
+}
+
+/* ── Low stock row highlight ── */
+.low-stock-text {
+    color: #e67e22;
+    font-weight: bold;
 }

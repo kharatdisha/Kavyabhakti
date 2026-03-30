@@ -1,12 +1,13 @@
-// Central API configuration - URL comes from js/config.js
-const API_BASE = CONFIG.API_BASE;
+// src/api.js
 
-// Get JWT token from localStorage
+// ── Base URL ───────────────────────────────────────────
+const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api';
+
+// ── Auth Helpers ───────────────────────────────────────
 function getToken() {
     return localStorage.getItem('adminToken');
 }
 
-// Authenticated headers
 function authHeaders() {
     return {
         'Content-Type': 'application/json',
@@ -14,7 +15,7 @@ function authHeaders() {
     };
 }
 
-// Generic fetch wrapper
+// ── Generic fetch wrapper ───────────────────────────────
 async function apiFetch(endpoint, options = {}) {
     try {
         const res = await fetch(`${API_BASE}${endpoint}`, options);
@@ -28,7 +29,7 @@ async function apiFetch(endpoint, options = {}) {
 }
 
 // ── Auth ──────────────────────────────────────────────
-async function apiLogin(username, password) {
+export async function apiLogin(username, password) {
     return apiFetch('/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -36,7 +37,7 @@ async function apiLogin(username, password) {
     });
 }
 
-async function apiUpdateCredentials(newUsername, newPassword) {
+export async function apiUpdateCredentials(newUsername, newPassword) {
     return apiFetch('/auth/update-credentials', {
         method: 'PUT',
         headers: authHeaders(),
@@ -45,23 +46,23 @@ async function apiUpdateCredentials(newUsername, newPassword) {
 }
 
 // ── Medicines ─────────────────────────────────────────
-async function apiGetMedicines() {
+export async function apiGetMedicines() {
     return apiFetch('/medicines');
 }
 
-async function apiGetCategories() {
+export async function apiGetCategories() {
     return apiFetch('/medicines/categories');
 }
 
-async function apiGetMedicinesByCategory(categoryName) {
+export async function apiGetMedicinesByCategory(categoryName) {
     return apiFetch(`/medicines/category/${encodeURIComponent(categoryName)}`);
 }
 
-async function apiSearchMedicines(query) {
+export async function apiSearchMedicines(query) {
     return apiFetch(`/medicines/search?q=${encodeURIComponent(query)}`);
 }
 
-async function apiAddMedicine(data) {
+export async function apiAddMedicine(data) {
     return apiFetch('/medicines', {
         method: 'POST',
         headers: authHeaders(),
@@ -69,7 +70,7 @@ async function apiAddMedicine(data) {
     });
 }
 
-async function apiUpdateMedicine(id, data) {
+export async function apiUpdateMedicine(id, data) {
     return apiFetch(`/medicines/${id}`, {
         method: 'PUT',
         headers: authHeaders(),
@@ -77,7 +78,7 @@ async function apiUpdateMedicine(id, data) {
     });
 }
 
-async function apiDeleteMedicine(id) {
+export async function apiDeleteMedicine(id) {
     return apiFetch(`/medicines/${id}`, {
         method: 'DELETE',
         headers: authHeaders()
@@ -85,7 +86,7 @@ async function apiDeleteMedicine(id) {
 }
 
 // ── Orders ────────────────────────────────────────────
-async function apiPlaceOrder(orderData) {
+export async function apiPlaceOrder(orderData) {
     return apiFetch('/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -93,11 +94,11 @@ async function apiPlaceOrder(orderData) {
     });
 }
 
-async function apiGetOrders() {
+export async function apiGetOrders() {
     return apiFetch('/orders', { headers: authHeaders() });
 }
 
-async function apiUpdateOrderStatus(id, status) {
+export async function apiUpdateOrderStatus(id, status) {
     return apiFetch(`/orders/${id}/status`, {
         method: 'PUT',
         headers: authHeaders(),
@@ -106,7 +107,7 @@ async function apiUpdateOrderStatus(id, status) {
 }
 
 // ── Requests ──────────────────────────────────────────
-async function apiSubmitRequest(data) {
+export async function apiSubmitRequest(data) {
     return apiFetch('/requests', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -114,11 +115,11 @@ async function apiSubmitRequest(data) {
     });
 }
 
-async function apiGetRequests() {
+export async function apiGetRequests() {
     return apiFetch('/requests', { headers: authHeaders() });
 }
 
-async function apiUpdateRequestStatus(id, status) {
+export async function apiUpdateRequestStatus(id, status) {
     return apiFetch(`/requests/${id}/status`, {
         method: 'PUT',
         headers: authHeaders(),
@@ -126,7 +127,7 @@ async function apiUpdateRequestStatus(id, status) {
     });
 }
 
-async function apiDeleteRequest(id) {
+export async function apiDeleteRequest(id) {
     return apiFetch(`/requests/${id}`, {
         method: 'DELETE',
         headers: authHeaders()
@@ -134,7 +135,7 @@ async function apiDeleteRequest(id) {
 }
 
 // ── Billing ───────────────────────────────────────────
-async function apiSaveBill(billData) {
+export async function apiSaveBill(billData) {
     return apiFetch('/billing', {
         method: 'POST',
         headers: authHeaders(),
@@ -142,11 +143,11 @@ async function apiSaveBill(billData) {
     });
 }
 
-async function apiGetBillingHistory() {
+export async function apiGetBillingHistory() {
     return apiFetch('/billing', { headers: authHeaders() });
 }
 
-async function apiDeleteBill(id) {
+export async function apiDeleteBill(id) {
     return apiFetch(`/billing/${id}`, {
         method: 'DELETE',
         headers: authHeaders()
@@ -154,14 +155,14 @@ async function apiDeleteBill(id) {
 }
 
 // ── Reports ───────────────────────────────────────────
-async function apiGetReport(startMonth, endMonth, year) {
+export async function apiGetReport(startMonth, endMonth, year) {
     return apiFetch(`/reports?startMonth=${startMonth}&endMonth=${endMonth}&year=${year}`, {
         headers: authHeaders()
     });
 }
 
 // ── Contact ───────────────────────────────────────────
-async function apiSendContact(name, email, message) {
+export async function apiSendContact(name, email, message) {
     return apiFetch('/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

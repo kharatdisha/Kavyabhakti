@@ -1,67 +1,74 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db');
+const Bill = require('../models/Bill');
+const Medicine = require('../models/Medicine');
 const { verifyToken } = require('../middleware/auth');
 
 // GET /api/reports?startMonth=01&endMonth=03&year=2026 - admin only
 router.get('/', verifyToken, async (req, res) => {
     const { startMonth, endMonth, year } = req.query;
 
-    if (!startMonth || !endMonth || !year) {
+    if (!startMonth || !endMonth || !year)
         return res.status(400).json({ error: 'startMonth, endMonth, and year are required.' });
-    }
 
-    const startDate = `${year}-${startMonth}-01`;
-    const endDate   = `${year}-${endMonth}-31`;
+    const startDate = new Date(`${year}-${startMonth}-01`);
+    const endDate = new Date(`${year}-${endMonth}-31`);
+    endDate.setHours(23, 59, 59, 999);
 
     try {
-        // Summary totals
-        const [summary] = await db.query(`
-            SELECT
-                COUNT(DISTINCT b.id)            AS total_bills,
-                COALESCE(SUM(bi.quantity), 0)   AS medicines_sold,
-                COALESCE(SUM(b.final_total), 0) AS revenue,
-                COALESCE(SUM(b.gst_amount), 0)  AS gst_collected,
-                COALESCE(SUM(bi.quantity * m.purchase_price), 0) AS purchase_cost
-            FROM bills b
-            JOIN bill_items bi ON bi.bill_id = b.id
-            JOIN medicines m ON m.id = bi.medicine_id
-            WHERE b.billing_date BETWEEN ? AND ?
-        `, [startDate, endDate]);
+        const bills = await Bill.find({ billing_date: { $gte: startDate, $lte: endDate } })
+            .sort({ billing_date: -1 });
 
-        const s = summary[0];
-        const profit = parseFloat(s.revenue) - parseFloat(s.purchase_cost);
+        // Gather all unique medicine IDs to fetch purchase prices
+        const medicineIds = [...new Set(
+            bills.flatMap(b => b.items.map(i => i.medicine_id.toString()))
+        )];
+        const medicines = await Medicine.find({ _id: { $in: medicineIds } }).select('_id purchase_price');
+        const priceMap = {};
+        medicines.forEach(m => { priceMap[m._id.toString()] = m.purchase_price; });
 
-        // Per-bill breakdown
-        const [bills] = await db.query(`
-            SELECT
-                b.id, b.bill_number, b.customer_name, b.billing_date,
-                b.final_total AS revenue, b.gst_amount,
-                COALESCE(SUM(bi.quantity * m.purchase_price), 0) AS purchase_cost,
-                GROUP_CONCAT(bi.medicine_name SEPARATOR ', ') AS medicines
-            FROM bills b
-            JOIN bill_items bi ON bi.bill_id = b.id
-            JOIN medicines m ON m.id = bi.medicine_id
-            WHERE b.billing_date BETWEEN ? AND ?
-            GROUP BY b.id
-            ORDER BY b.billing_date DESC
-        `, [startDate, endDate]);
+        let totalBills = bills.length;
+        let medicinesSold = 0;
+        let revenue = 0;
+        let gstCollected = 0;
+        let purchaseCost = 0;
 
-        // Add profit per bill
-        bills.forEach(bill => {
-            bill.profit = parseFloat(bill.revenue) - parseFloat(bill.purchase_cost);
+        const billDetails = bills.map(bill => {
+            const billPurchaseCost = bill.items.reduce((sum, item) => {
+                const pp = priceMap[item.medicine_id.toString()] || 0;
+                return sum + (pp * item.quantity);
+            }, 0);
+
+            medicinesSold += bill.items.reduce((sum, i) => sum + i.quantity, 0);
+            revenue += bill.final_total;
+            gstCollected += bill.gst_amount;
+            purchaseCost += billPurchaseCost;
+
+            return {
+                id: bill._id,
+                bill_number: bill.bill_number,
+                customer_name: bill.customer_name,
+                billing_date: bill.billing_date,
+                revenue: bill.final_total,
+                gst_amount: bill.gst_amount,
+                purchase_cost: parseFloat(billPurchaseCost.toFixed(2)),
+                profit: parseFloat((bill.final_total - billPurchaseCost).toFixed(2)),
+                medicines: bill.items.map(i => i.medicine_name).join(', ')
+            };
         });
+
+        const profit = revenue - purchaseCost;
 
         res.json({
             summary: {
-                totalBills:    s.total_bills,
-                medicinesSold: s.medicines_sold,
-                revenue:       parseFloat(s.revenue).toFixed(2),
-                gstCollected:  parseFloat(s.gst_collected).toFixed(2),
-                purchaseCost:  parseFloat(s.purchase_cost).toFixed(2),
-                profit:        profit.toFixed(2)
+                totalBills,
+                medicinesSold,
+                revenue: revenue.toFixed(2),
+                gstCollected: gstCollected.toFixed(2),
+                purchaseCost: purchaseCost.toFixed(2),
+                profit: profit.toFixed(2)
             },
-            bills
+            bills: billDetails
         });
     } catch (err) {
         res.status(500).json({ error: err.message });

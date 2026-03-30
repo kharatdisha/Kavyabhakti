@@ -1,17 +1,20 @@
-// db.js
-const mysql = require('mysql2/promise');
 require('dotenv').config();
+const mongoose = require('mongoose');
 
-const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT || 3306,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-   
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/kavyabhakti_medical';
+
+mongoose.connect(MONGO_URI)
+    .then(() => console.log('✅ MongoDB connected successfully.'))
+    .catch(err => {
+        console.error('❌ MongoDB connection failed:', err.message);
+        process.exit(1);
+    });
+
+// Graceful shutdown
+process.on('SIGINT', async () => {
+    await mongoose.connection.close();
+    console.log('MongoDB connection closed.');
+    process.exit(0);
 });
 
-module.exports = pool;
+module.exports = mongoose;

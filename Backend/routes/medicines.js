@@ -1,18 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db');
+const Medicine = require('../models/Medicine');
+const Category = require('../models/Category');
 const { verifyToken } = require('../middleware/auth');
 
-// GET /api/medicines - public, returns all medicines with category name
+// GET /api/medicines - public
 router.get('/', async (req, res) => {
     try {
-        const [rows] = await db.query(`
-            SELECT m.*, c.name AS category_name, c.image_path AS category_image
-            FROM medicines m
-            JOIN categories c ON m.category_id = c.id
-            ORDER BY c.name, m.name
-        `);
-        res.json(rows);
+        const medicines = await Medicine.find().populate('category_id', 'name image_path').sort({ name: 1 });
+        const result = medicines.map(m => ({
+            ...m.toObject(),
+            category_name: m.category_id?.name,
+            category_image: m.category_id?.image_path
+        }));
+        res.json(result);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -21,8 +22,30 @@ router.get('/', async (req, res) => {
 // GET /api/medicines/categories - public
 router.get('/categories', async (req, res) => {
     try {
-        const [rows] = await db.query('SELECT * FROM categories ORDER BY name');
-        res.json(rows);
+        const categories = await Category.find().sort({ name: 1 });
+        res.json(categories);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// GET /api/medicines/search?q=term - public
+router.get('/search', async (req, res) => {
+    const q = req.query.q || '';
+    try {
+        const regex = new RegExp(q, 'i');
+        const categories = await Category.find({ name: regex }).select('_id');
+        const categoryIds = categories.map(c => c._id);
+
+        const medicines = await Medicine.find({
+            $or: [{ name: regex }, { brand: regex }, { category_id: { $in: categoryIds } }]
+        }).populate('category_id', 'name').sort({ name: 1 });
+
+        const result = medicines.map(m => ({
+            ...m.toObject(),
+            category_name: m.category_id?.name
+        }));
+        res.json(result);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -31,31 +54,17 @@ router.get('/categories', async (req, res) => {
 // GET /api/medicines/category/:categoryName - public
 router.get('/category/:categoryName', async (req, res) => {
     try {
-        const [rows] = await db.query(`
-            SELECT m.*, c.name AS category_name
-            FROM medicines m
-            JOIN categories c ON m.category_id = c.id
-            WHERE c.name = ?
-            ORDER BY m.name
-        `, [req.params.categoryName]);
-        res.json(rows);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+        const category = await Category.findOne({ name: req.params.categoryName });
+        if (!category) return res.json([]);
 
-// GET /api/medicines/search?q=term - public
-router.get('/search', async (req, res) => {
-    const q = `%${req.query.q || ''}%`;
-    try {
-        const [rows] = await db.query(`
-            SELECT m.*, c.name AS category_name
-            FROM medicines m
-            JOIN categories c ON m.category_id = c.id
-            WHERE m.name LIKE ? OR m.brand LIKE ? OR c.name LIKE ?
-            ORDER BY m.name
-        `, [q, q, q]);
-        res.json(rows);
+        const medicines = await Medicine.find({ category_id: category._id })
+            .populate('category_id', 'name').sort({ name: 1 });
+
+        const result = medicines.map(m => ({
+            ...m.toObject(),
+            category_name: m.category_id?.name
+        }));
+        res.json(result);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -64,14 +73,9 @@ router.get('/search', async (req, res) => {
 // GET /api/medicines/:id - public
 router.get('/:id', async (req, res) => {
     try {
-        const [rows] = await db.query(`
-            SELECT m.*, c.name AS category_name
-            FROM medicines m
-            JOIN categories c ON m.category_id = c.id
-            WHERE m.id = ?
-        `, [req.params.id]);
-        if (rows.length === 0) return res.status(404).json({ error: 'Medicine not found.' });
-        res.json(rows[0]);
+        const medicine = await Medicine.findById(req.params.id).populate('category_id', 'name');
+        if (!medicine) return res.status(404).json({ error: 'Medicine not found.' });
+        res.json({ ...medicine.toObject(), category_name: medicine.category_id?.name });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -81,19 +85,24 @@ router.get('/:id', async (req, res) => {
 router.post('/', verifyToken, async (req, res) => {
     const { name, brand, description, category_id, image_path, purchase_price, selling_price, gst_percent, stock, expiry_date, location } = req.body;
 
-    if (!name || !brand || !category_id || !selling_price) {
+    if (!name || !brand || !category_id || !selling_price)
         return res.status(400).json({ error: 'Name, brand, category, and selling price are required.' });
-    }
 
     try {
-        const [result] = await db.query(`
-            INSERT INTO medicines (name, brand, description, category_id, image_path, purchase_price, selling_price, gst_percent, stock, expiry_date, location, is_available)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `, [name, brand, description || '', category_id, image_path || 'index_images/Medical.jpg',
-            purchase_price || 0, selling_price, gst_percent || 5, stock || 0,
-            expiry_date || null, location || '', stock > 0 ? 1 : 0]);
-
-        res.status(201).json({ message: 'Medicine added.', id: result.insertId });
+        const medicine = await Medicine.create({
+            name, brand,
+            description: description || '',
+            category_id,
+            image_path: image_path || 'index_images/Medical.jpg',
+            purchase_price: purchase_price || 0,
+            selling_price,
+            gst_percent: gst_percent || 5,
+            stock: stock || 0,
+            expiry_date: expiry_date || null,
+            location: location || '',
+            is_available: (stock || 0) > 0
+        });
+        res.status(201).json({ message: 'Medicine added.', id: medicine._id });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -101,19 +110,8 @@ router.post('/', verifyToken, async (req, res) => {
 
 // PUT /api/medicines/:id - admin only
 router.put('/:id', verifyToken, async (req, res) => {
-    const { name, brand, description, category_id, image_path, purchase_price, selling_price, gst_percent, stock, expiry_date, location, is_available } = req.body;
-
     try {
-        await db.query(`
-            UPDATE medicines SET
-                name = ?, brand = ?, description = ?, category_id = ?, image_path = ?,
-                purchase_price = ?, selling_price = ?, gst_percent = ?,
-                stock = ?, expiry_date = ?, location = ?, is_available = ?
-            WHERE id = ?
-        `, [name, brand, description, category_id, image_path,
-            purchase_price, selling_price, gst_percent,
-            stock, expiry_date, location, is_available, req.params.id]);
-
+        await Medicine.findByIdAndUpdate(req.params.id, req.body);
         res.json({ message: 'Medicine updated.' });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -123,7 +121,7 @@ router.put('/:id', verifyToken, async (req, res) => {
 // DELETE /api/medicines/:id - admin only
 router.delete('/:id', verifyToken, async (req, res) => {
     try {
-        await db.query('DELETE FROM medicines WHERE id = ?', [req.params.id]);
+        await Medicine.findByIdAndDelete(req.params.id);
         res.json({ message: 'Medicine deleted.' });
     } catch (err) {
         res.status(500).json({ error: err.message });

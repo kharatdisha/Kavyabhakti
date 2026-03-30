@@ -2,6 +2,10 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+    console.error('❌ JWT_SECRET is not set in environment variables.');
+    process.exit(1);
+}
 
 function verifyToken(req, res, next) {
     const authHeader = req.headers['authorization'];

@@ -134,11 +134,6 @@ header {
   text-align: center;
 }
 
-/* hero-bg used in HTML to avoid inline style */
-.hero-bg {
-  background-image: url("../index_images/abc1.jpg");
-}
-
 .hero-overlay {
   position: absolute;
   top: 0;
