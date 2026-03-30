@@ -13,10 +13,17 @@ const allowedOrigins = process.env.FRONTEND_URL
 // CORS middleware
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // Allow Postman / server-side requests
-    if (allowedOrigins.includes(origin)) return callback(null, true); // Allow exact matches
-    console.log('Blocked by CORS:', origin); // Log blocked requests
-    return callback(new Error('Not allowed by CORS'));
+    console.log("Incoming origin:", origin);
+    console.log("Allowed origins:", allowedOrigins);
+
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    console.log("Blocked by CORS:", origin);
+    return callback(new Error("Not allowed by CORS"));
   },
   credentials: true
 }));
