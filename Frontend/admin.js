@@ -84,7 +84,7 @@ async function initDashboard() {
 }
 
 // ── Section Navigation ───────────────────────────────────────────────────────
-function showSection(sectionId) {
+function showSection(event, sectionId) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
     document.getElementById(sectionId).classList.add('active');
