@@ -656,3 +656,16 @@ document.addEventListener('click', function (e) {
         suggestionsDiv.classList.remove('show');
     }
 });
+// Initialize dashboard
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof initDashboard === 'function') {
+        initDashboard();
+    }
+});
+
+// Make functions global for HTML onclick
+window.editMedicine = editMedicine;
+window.deleteMedicine = deleteMedicine;
+window.updateOrderStatus = updateOrderStatus;
+window.updateRequestStatus = updateRequestStatus;
+window.deleteRequest = deleteRequest;
