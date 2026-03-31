@@ -69,6 +69,40 @@ async function apiDeleteMedicine(id) {
     });
 }
 
+// ── Billing ─────────────────────────────────────────
+async function apiSaveBill(billData) {
+    return apiFetch('/billing', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(billData)
+    });
+}
+
+async function apiGetBills() {
+    return apiFetch('/billing', {
+        method: 'GET',
+        headers: authHeaders()
+    });
+}
+
+// ── Reports ─────────────────────────────────────────
+async function apiGetReport(reportType, params = {}) {
+    // e.g., reportType could be "sales", "inventory", etc.
+    // params can include filters like date range
+    const query = new URLSearchParams(params).toString();
+    return apiFetch(`/reports/${reportType}?${query}`, {
+        method: 'GET',
+        headers: authHeaders()
+    });
+}
+
+async function apiPlaceOrder(orderData) {
+    return apiFetch('/orders', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(orderData)
+    });
+}
 // 🌍 MAKE GLOBAL
 window.apiLogin = apiLogin;
 window.apiGetMedicines = apiGetMedicines;
@@ -78,3 +112,7 @@ window.apiSearchMedicines = apiSearchMedicines;
 window.apiAddMedicine = apiAddMedicine;
 window.apiUpdateMedicine = apiUpdateMedicine;
 window.apiDeleteMedicine = apiDeleteMedicine;
+window.apiSaveBill = apiSaveBill;
+window.apiGetBills = apiGetBills;
+window.apiGetReport = apiGetReport;
+window.apiPlaceOrder = apiPlaceOrder;
