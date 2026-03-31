@@ -9,11 +9,13 @@ if (!JWT_SECRET) {
 
 function verifyToken(req, res, next) {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Bearer <token>
 
-    if (!token) {
+    // ✅ Check if authHeader exists and starts with "Bearer "
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({ error: 'Access denied. No token provided.' });
     }
+
+    const token = authHeader.split(' ')[1]; // Extract token after "Bearer"
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
