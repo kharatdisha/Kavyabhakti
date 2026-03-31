@@ -49,7 +49,30 @@ async function apiAddMedicine(data) {
     });
 }
 
-// ── Make functions GLOBAL (important) ──────────────────
+// 🌍 Make ALL API functions global
 window.apiLogin = apiLogin;
+
 window.apiGetMedicines = apiGetMedicines;
+window.apiGetCategories = apiGetCategories;
+window.apiGetMedicinesByCategory = apiGetMedicinesByCategory;
+window.apiSearchMedicines = apiSearchMedicines;
 window.apiAddMedicine = apiAddMedicine;
+window.apiUpdateMedicine = apiUpdateMedicine;
+window.apiDeleteMedicine = apiDeleteMedicine;
+
+window.apiPlaceOrder = apiPlaceOrder;
+window.apiGetOrders = apiGetOrders;
+window.apiUpdateOrderStatus = apiUpdateOrderStatus;
+
+window.apiSubmitRequest = apiSubmitRequest;
+window.apiGetRequests = apiGetRequests;
+window.apiUpdateRequestStatus = apiUpdateRequestStatus;
+window.apiDeleteRequest = apiDeleteRequest;
+
+window.apiSaveBill = apiSaveBill;
+window.apiGetBillingHistory = apiGetBillingHistory;
+window.apiDeleteBill = apiDeleteBill;
+
+window.apiGetReport = apiGetReport;
+
+window.apiSendContact = apiSendContact;
