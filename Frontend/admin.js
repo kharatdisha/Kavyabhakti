@@ -1,3 +1,67 @@
+// ── Admin.js ────────────────────────────────────────────────────────────────
+
+// ── API Helpers ──────────────────────────────────────────────────────────────
+async function apiLogin(username, password) {
+    const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+    });
+    if (!res.ok) throw new Error('Login failed');
+    return res.json();
+}
+
+async function apiGetCategories() {
+    const res = await fetch('/api/categories', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+    });
+    if (!res.ok) throw new Error('Failed to fetch categories');
+    return res.json();
+}
+
+async function apiGetMedicines() {
+    const res = await fetch('/api/medicines', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+    });
+    if (!res.ok) throw new Error('Failed to fetch medicines');
+    return res.json();
+}
+
+async function apiAddMedicine(data) {
+    const res = await fetch('/api/medicines', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('Failed to add medicine');
+    return res.json();
+}
+
+async function apiUpdateMedicine(id, data) {
+    const res = await fetch(`/api/medicines/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('Failed to update medicine');
+    return res.json();
+}
+
+async function apiDeleteMedicine(id) {
+    const res = await fetch(`/api/medicines/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+    });
+    if (!res.ok) throw new Error('Failed to delete medicine');
+    return res.json();
+}
+
 // ── Auth & Login ─────────────────────────────────────────────────────────────
 const loginForm = document.getElementById('login-form');
 if (loginForm) {
@@ -45,11 +109,12 @@ async function initDashboard() {
         return;
     }
 
-    await loadCategories();
-    await renderMedicines();
-    await renderOrders();
-    await renderRequests();
-    initBillingDate();
+    try {
+        await loadCategories();
+        await renderMedicines();
+    } catch (err) {
+        console.error('Failed to initialize dashboard:', err);
+    }
 
     const usernameEl = document.getElementById('current-username');
     if (usernameEl) usernameEl.textContent = localStorage.getItem('adminUsername') || 'admin';
@@ -61,9 +126,6 @@ function showSection(sectionId, event) {
     document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
     document.getElementById(sectionId).classList.add('active');
     if(event) event.target.classList.add('active');
-
-    if (sectionId === 'billing-management') initBillingDate();
-    if (sectionId === 'reports-section') initReports();
 }
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
@@ -80,7 +142,6 @@ function isLowStock(stock) { return stock <= 10; }
 
 // ── Medicine Management ───────────────────────────────────────────────────────
 let medicines = [];
-let expirySortDirection = 'asc';
 
 async function loadCategories() {
     try {
@@ -109,21 +170,6 @@ async function renderMedicines(list) {
     if (!tbody) return;
     tbody.innerHTML = '';
 
-    const statsEl = document.getElementById('medicine-stats');
-    if (statsEl) {
-        const lowStock = list.filter(m => isLowStock(m.stock)).length;
-        const expiringSoon = list.filter(m => isCloseToExpiry(m.expiry_date)).length;
-        statsEl.innerHTML =
-            `Showing <strong>${list.length}</strong> medicines &nbsp;|&nbsp; ` +
-            `<span style="color:#e67e22;">⚠ Low Stock: ${lowStock}</span> &nbsp;|&nbsp; ` +
-            `<span style="color:#c0392b;">🗓 Expiring Soon: ${expiringSoon}</span>`;
-    }
-
-    if (list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;padding:20px;color:#888;">No medicines found.</td></tr>';
-        return;
-    }
-
     list.forEach((med, idx) => {
         const expiry = med.expiry_date ? med.expiry_date.split('T')[0] : '';
         const row = document.createElement('tr');
@@ -138,13 +184,13 @@ async function renderMedicines(list) {
             <td>${idx + 1}</td>
             <td><strong>${med.name}</strong></td>
             <td>${med.brand}</td>
-            <td><span style="background:#e8f4fd;color:#2980b9;padding:2px 8px;border-radius:12px;font-size:12px;">${med.category_name || ''}</span></td>
+            <td>${med.category_name || ''}</td>
             <td>₹${parseFloat(med.purchase_price).toFixed(2)}</td>
             <td>₹${parseFloat(med.selling_price).toFixed(2)}</td>
             <td>${med.gst_percent}%</td>
-            <td class="${isCloseToExpiry(expiry) ? 'expiry-warning-text' : ''}">${formatDate(expiry)}</td>
+            <td>${formatDate(expiry)}</td>
             <td>${med.location || '—'}</td>
-            <td class="${isLowStock(med.stock) ? 'low-stock-text' : ''}">${med.stock}</td>
+            <td>${med.stock}</td>
             <td>${statusBadge}</td>
             <td>
                 <button onclick="editMedicine('${med._id}')" class="edit-btn">Edit</button>
@@ -155,7 +201,7 @@ async function renderMedicines(list) {
     });
 }
 
-// ── Medicine CRUD ─────────────────────────────────────────────────────────────
+// ── CRUD ─────────────────────────────────────────────────────────────────────
 async function addMedicine(e) {
     e.preventDefault();
     const data = {
@@ -184,33 +230,21 @@ async function editMedicine(id) {
     const med = medicines.find(m => m._id === id);
     if (!med) return;
 
-    const newName     = prompt('Medicine Name:', med.name); if (newName === null) return;
-    const newBrand    = prompt('Brand:', med.brand); if (newBrand === null) return;
-    const newPurchase = prompt('Purchase Price:', med.purchase_price); if (newPurchase === null) return;
-    const newSelling  = prompt('Selling Price:', med.selling_price); if (newSelling === null) return;
-    const newStock    = prompt('Stock:', med.stock); if (newStock === null) return;
-    const newExpiry   = prompt('Expiry Date (YYYY-MM-DD):', med.expiry_date ? med.expiry_date.split('T')[0] : ''); if (newExpiry === null) return;
-    const newLocation = prompt('Location:', med.location); if (newLocation === null) return;
+    const newName = prompt('Medicine Name:', med.name); if (newName === null) return;
+    const newBrand = prompt('Brand:', med.brand); if (newBrand === null) return;
+    const newStock = prompt('Stock:', med.stock); if (newStock === null) return;
 
     try {
         await apiUpdateMedicine(id, {
+            ...med,
             name: newName,
             brand: newBrand,
-            purchase_price: parseFloat(newPurchase),
-            selling_price:  parseFloat(newSelling),
-            stock:          parseInt(newStock),
-            expiry_date:    newExpiry,
-            location:       newLocation,
-            description:    med.description,
-            category_id:    med.category_id?._id || med.category_id,
-            image_path:     med.image_path,
-            gst_percent:    med.gst_percent,
-            is_available:   parseInt(newStock) > 0
+            stock: parseInt(newStock),
+            is_available: parseInt(newStock) > 0
         });
-        alert('Medicine updated.');
         await renderMedicines();
     } catch (err) {
-        alert('Failed to update: ' + err.message);
+        alert('Failed to update medicine: ' + err.message);
     }
 }
 
@@ -220,16 +254,17 @@ async function deleteMedicine(id) {
         await apiDeleteMedicine(id);
         await renderMedicines();
     } catch (err) {
-        alert('Failed to delete: ' + err.message);
+        alert('Failed to delete medicine: ' + err.message);
     }
 }
 
-// ── Event Listeners ──────────────────────────────────────────────────────────
+// ── Init Dashboard ──────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof initDashboard === 'function') initDashboard();
 });
 
-// Make CRUD functions global for HTML onclick
+// ── Global Functions for HTML ───────────────────────────────────────────────
 window.editMedicine = editMedicine;
 window.deleteMedicine = deleteMedicine;
 window.logout = logout;
+window.addMedicine = addMedicine;
