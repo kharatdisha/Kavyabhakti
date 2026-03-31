@@ -1,8 +1,7 @@
-// api.js (FINAL WORKING VERSION)
-
 // ── Base URL ───────────────────────────────────────────
 const API_BASE = 'https://kavyabhakti-backend.onrender.com/api';
-// ── Auth Helpers ───────────────────────────────────────
+
+// ── Helpers ────────────────────────────────────────────
 function getToken() {
     return localStorage.getItem('adminToken');
 }
@@ -14,17 +13,11 @@ function authHeaders() {
     };
 }
 
-// ── Generic fetch wrapper ───────────────────────────────
 async function apiFetch(endpoint, options = {}) {
-    try {
-        const res = await fetch(`${API_BASE}${endpoint}`, options);
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Request failed');
-        return data;
-    } catch (err) {
-        console.error(`API Error [${endpoint}]:`, err.message);
-        throw err;
-    }
+    const res = await fetch(`${API_BASE}${endpoint}`, options);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    return data;
 }
 
 // ── Auth ──────────────────────────────────────────────
@@ -41,6 +34,18 @@ async function apiGetMedicines() {
     return apiFetch('/medicines');
 }
 
+async function apiGetCategories() {
+    return apiFetch('/medicines/categories');
+}
+
+async function apiGetMedicinesByCategory(categoryName) {
+    return apiFetch(`/medicines/category/${encodeURIComponent(categoryName)}`);
+}
+
+async function apiSearchMedicines(query) {
+    return apiFetch(`/medicines/search?q=${encodeURIComponent(query)}`);
+}
+
 async function apiAddMedicine(data) {
     return apiFetch('/medicines', {
         method: 'POST',
@@ -49,9 +54,23 @@ async function apiAddMedicine(data) {
     });
 }
 
-// 🌍 Make ALL API functions global
-window.apiLogin = apiLogin;
+async function apiUpdateMedicine(id, data) {
+    return apiFetch(`/medicines/${id}`, {
+        method: 'PUT',
+        headers: authHeaders(),
+        body: JSON.stringify(data)
+    });
+}
 
+async function apiDeleteMedicine(id) {
+    return apiFetch(`/medicines/${id}`, {
+        method: 'DELETE',
+        headers: authHeaders()
+    });
+}
+
+// 🌍 MAKE GLOBAL
+window.apiLogin = apiLogin;
 window.apiGetMedicines = apiGetMedicines;
 window.apiGetCategories = apiGetCategories;
 window.apiGetMedicinesByCategory = apiGetMedicinesByCategory;
@@ -59,20 +78,3 @@ window.apiSearchMedicines = apiSearchMedicines;
 window.apiAddMedicine = apiAddMedicine;
 window.apiUpdateMedicine = apiUpdateMedicine;
 window.apiDeleteMedicine = apiDeleteMedicine;
-
-window.apiPlaceOrder = apiPlaceOrder;
-window.apiGetOrders = apiGetOrders;
-window.apiUpdateOrderStatus = apiUpdateOrderStatus;
-
-window.apiSubmitRequest = apiSubmitRequest;
-window.apiGetRequests = apiGetRequests;
-window.apiUpdateRequestStatus = apiUpdateRequestStatus;
-window.apiDeleteRequest = apiDeleteRequest;
-
-window.apiSaveBill = apiSaveBill;
-window.apiGetBillingHistory = apiGetBillingHistory;
-window.apiDeleteBill = apiDeleteBill;
-
-window.apiGetReport = apiGetReport;
-
-window.apiSendContact = apiSendContact;
