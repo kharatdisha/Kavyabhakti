@@ -86,15 +86,15 @@ async function apiGetBills() {
 }
 
 // ── Reports ─────────────────────────────────────────
-async function apiGetReport(reportType, params = {}) {
-    // e.g., reportType could be "sales", "inventory", etc.
-    // params can include filters like date range
-    const query = new URLSearchParams(params).toString();
-    return apiFetch(`/reports/${reportType}?${query}`, {
+// ── Reports ─────────────────────────────────────────
+async function apiGetReport(startMonth, endMonth, year) {
+    const query = `?startMonth=${startMonth}&endMonth=${endMonth}&year=${year}`;
+    return apiFetch(`/reports${query}`, {
         method: 'GET',
         headers: authHeaders()
     });
 }
+
 
 async function apiPlaceOrder(orderData) {
     return apiFetch('/orders', {
