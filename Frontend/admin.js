@@ -90,6 +90,7 @@ function showSection(event, sectionId) {
     document.getElementById(sectionId).classList.add('active');
     event.target.classList.add('active');
 
+    if (sectionId === 'billing-history') loadBillingHistory();
     if (sectionId === 'billing-management') initBillingDate();
     if (sectionId === 'reports-section') initReports();
 }
