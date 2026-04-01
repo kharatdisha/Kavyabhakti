@@ -125,6 +125,13 @@ async function apiDeleteRequest(id) {
     });
 }
 
+async function apiGetOrders() {
+    return apiFetch('/orders', {
+        method: 'GET',
+        headers: authHeaders()
+    });
+}
+
 // Called when order status is changed from the dropdown
 async function updateOrderStatus(id, status) {
     try {
