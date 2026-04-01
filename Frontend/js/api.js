@@ -78,7 +78,7 @@ async function apiSaveBill(billData) {
     });
 }
 
-async function apiGetBills() {
+async function apiGetBillingHistory() {
     return apiFetch('/billing', {
         method: 'GET',
         headers: authHeaders()
@@ -95,13 +95,45 @@ async function apiGetReport(startMonth, endMonth, year) {
     });
 }
 
-
-async function apiPlaceOrder(orderData) {
+async function apiGetOrders() {
     return apiFetch('/orders', {
-        method: 'POST',
-        headers: authHeaders(),
-        body: JSON.stringify(orderData)
+        method: 'GET',
+        headers: authHeaders()
     });
+}
+async function apiGetRequests() {
+    return apiFetch('/requests', {
+        method: 'GET',
+        headers: authHeaders()
+    });
+}
+
+// Update request status
+async function apiUpdateRequestStatus(id, status) {
+    return apiFetch(`/requests/${id}`, {
+        method: 'PATCH',
+        headers: authHeaders(),
+        body: JSON.stringify({ status })
+    });
+}
+
+// Delete a request
+async function apiDeleteRequest(id) {
+    return apiFetch(`/requests/${id}`, {
+        method: 'DELETE',
+        headers: authHeaders()
+    });
+}
+
+// Called when order status is changed from the dropdown
+async function updateOrderStatus(id, status) {
+    try {
+        await apiUpdateOrderStatus(id, status); // calls the API from api.js
+        alert('Order status updated successfully.');
+    } catch (err) {
+        console.error('Failed to update order status:', err);
+        alert('Failed to update order status.');
+    }
 }
 // 🌍 MAKE GLOBAL
 window.apiLogin = apiLogin;
@@ -113,6 +145,10 @@ window.apiAddMedicine = apiAddMedicine;
 window.apiUpdateMedicine = apiUpdateMedicine;
 window.apiDeleteMedicine = apiDeleteMedicine;
 window.apiSaveBill = apiSaveBill;
-window.apiGetBills = apiGetBills;
+window.apiGetBillingHistory = apiGetBillingHistory;
 window.apiGetReport = apiGetReport;
-window.apiPlaceOrder = apiPlaceOrder;
+window.apiPlaceOrder = apiGetOrders;
+window.apiGetRequests = apiGetRequests;
+window.apiUpdateRequestStatus = apiUpdateRequestStatus;
+window.apiDeleteRequest = apiDeleteRequest;
+window.apiUpdateOrderStatus = updateOrderStatus;
