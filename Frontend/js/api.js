@@ -84,6 +84,13 @@ async function apiGetBillingHistory() {
         headers: authHeaders()
     });
 }
+// Delete a bill by ID
+async function apiDeleteBill(id) {
+    return apiFetch(`/billing/${id}`, {
+        method: 'DELETE',
+        headers: authHeaders()
+    });
+}
 
 // ── Reports ─────────────────────────────────────────
 // ── Reports ─────────────────────────────────────────
@@ -153,6 +160,7 @@ window.apiUpdateMedicine = apiUpdateMedicine;
 window.apiDeleteMedicine = apiDeleteMedicine;
 window.apiSaveBill = apiSaveBill;
 window.apiGetBillingHistory = apiGetBillingHistory;
+window.apiDeleteBill = apiDeleteBill;
 window.apiGetReport = apiGetReport;
 window.apiPlaceOrder = apiGetOrders;
 window.apiGetRequests = apiGetRequests;
