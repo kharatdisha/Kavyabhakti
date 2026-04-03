@@ -246,33 +246,45 @@ async function deleteMedicine(id) {
 async function renderOrders() {
     try {
         const orders = await apiGetOrders();
+        console.log(orders); // 🔍 DEBUG
+
         const tbody = document.querySelector('#orders-table tbody');
         if (!tbody) return;
         tbody.innerHTML = '';
 
+        if (!orders || orders.length === 0) {
+            tbody.innerHTML = `<tr>
+                <td colspan="5" style="text-align:center;">No orders found</td>
+            </tr>`;
+            return;
+        }
+
         orders.forEach(order => {
-            const medList = order.medicines.map(m => `${m.medicine_name} x${m.quantity}`).join(', ');
+            const medList = (order.medicines || []).map(m =>
+                `${m.medicine_name || m.name || 'Medicine'} x${m.quantity || 1}`
+            ).join(', ');
+
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${order.customer_name}</td>
-                <td>${order.phone}</td>
-                <td>${order.address || ''}</td>
-                <td>${medList}</td>
+                <td>${order.customer_name || order.customerName || 'N/A'}</td>
+                <td>${order.phone || order.phoneNumber || 'N/A'}</td>
+                <td>${order.address || 'N/A'}</td>
+                <td>${medList || 'N/A'}</td>
                 <td>
                     <select onchange="updateOrderStatus('${order._id}', this.value)">
                         ${['Pending', 'Confirmed', 'Delivered', 'Cancelled'].map(s =>
-                            `<option value="${s}" ${order.status === s ? 'selected' : ''}>${s}</option>`
+                            `<option value="${s}" ${(order.status || 'Pending') === s ? 'selected' : ''}>${s}</option>`
                         ).join('')}
                     </select>
                 </td>
             `;
             tbody.appendChild(row);
         });
+
     } catch (err) {
         console.error('Failed to load orders:', err);
     }
 }
-
 async function updateOrderStatus(id, status) {
     try {
         await apiUpdateOrderStatus(id, status);
