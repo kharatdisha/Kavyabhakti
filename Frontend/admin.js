@@ -245,8 +245,10 @@ async function deleteMedicine(id) {
 // ── Orders Management ────────────────────────────────────────────────────────
 async function renderOrders() {
     try {
-        const orders = await apiGetOrders();
-        console.log(orders); // 🔍 DEBUG
+        const response = await apiGetOrders();
+        const orders = response.orders || response;
+
+        console.log(orders); // DEBUG
 
         const tbody = document.querySelector('#orders-table tbody');
         if (!tbody) return;
@@ -261,18 +263,18 @@ async function renderOrders() {
 
         orders.forEach(order => {
             const medList = (order.medicines || []).map(m =>
-                `${m.medicine_name || m.name || 'Medicine'} x${m.quantity || 1}`
+                `${m.medicine_name || m.name || 'Medicine'} x${m.quantity || m.qty || 1}`
             ).join(', ');
 
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${order.customer_name || order.customerName || 'N/A'}</td>
-                <td>${order.phone || order.phoneNumber || 'N/A'}</td>
+                <td>${order.customer_name || 'N/A'}</td>
+                <td>${order.phone || 'N/A'}</td>
                 <td>${order.address || 'N/A'}</td>
                 <td>${medList || 'N/A'}</td>
                 <td>
                     <select onchange="updateOrderStatus('${order._id}', this.value)">
-                        ${['Pending', 'Confirmed', 'Delivered', 'Cancelled'].map(s =>
+                        ${['Pending','Confirmed','Delivered','Cancelled'].map(s =>
                             `<option value="${s}" ${(order.status || 'Pending') === s ? 'selected' : ''}>${s}</option>`
                         ).join('')}
                     </select>
@@ -288,7 +290,13 @@ async function renderOrders() {
 async function updateOrderStatus(id, status) {
     try {
         await apiUpdateOrderStatus(id, status);
-    } catch {
+
+        console.log('Order updated'); // ✅ no annoying popup
+
+        await renderOrders(); // ✅ refresh table properly
+
+    } catch (err) {
+        console.error(err);
         alert('Failed to update order status.');
     }
 }
