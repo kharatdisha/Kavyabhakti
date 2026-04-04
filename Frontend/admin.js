@@ -484,7 +484,16 @@ async function saveBill() {
         alert('Failed to save bill: ' + err.message);
     }
 }
+function printReport() {
+    const content = document.getElementById("report-section").innerHTML;
+    const original = document.body.innerHTML;
 
+    document.body.innerHTML = content;
+    window.print();
+    document.body.innerHTML = original;
+
+    location.reload();
+}
 function clearBillingForm() {
     billingItems = [];
     renderBillingTable();
