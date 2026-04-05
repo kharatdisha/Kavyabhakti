@@ -227,11 +227,10 @@
                 </div>
             </div>
 
-            <!-- ── Report Section with Filters ── -->
+            <!-- ── Report Filters ── -->
             <div id="report-filters-section">
                 <h2>Generate Monthly Report</h2>
                 <div class="report-filters">
-                    <!-- Start Month -->
                     <div class="filter-group">
                         <label for="report-start-month">Start Month:</label>
                         <select id="report-start-month">
@@ -250,7 +249,6 @@
                         </select>
                     </div>
             
-                    <!-- End Month -->
                     <div class="filter-group">
                         <label for="report-end-month">End Month:</label>
                         <select id="report-end-month">
@@ -269,7 +267,6 @@
                         </select>
                     </div>
             
-                    <!-- Year -->
                     <div class="filter-group">
                         <label for="report-year">Year:</label>
                         <select id="report-year">
@@ -280,15 +277,16 @@
                         </select>
                     </div>
             
-                    <!-- Generate Button -->
                     <button type="button" class="report-btn" onclick="generateMonthlyReport()">Generate Report</button>
                 </div>
             </div>
             
-            <!-- ── Report Display Section ── -->
+            <!-- ── Report Display ── -->
             <div id="report-section">
-                <h2>Medical Store Sales Report</h2>
-                <p id="report-period">Period: -</p> <!-- JS will update period -->
+                <div id="report-header" class="report-header report-header-hidden">
+                    <h2>Medical Store Sales Report</h2>
+                    <p id="report-period">Period: -</p>
+                </div>
             
                 <!-- Summary Cards -->
                 <div class="report-summary-cards">
@@ -297,20 +295,24 @@
                         <p id="report-total-bills">0</p>
                     </div>
                     <div class="summary-card">
+                        <h3>Medicines Sold</h3>
+                        <p id="report-medicines-sold">0</p>
+                    </div>
+                    <div class="summary-card">
                         <h3>Revenue</h3>
-                        <p id="report-revenue">₹0</p>
+                        <p id="report-revenue">₹0.00</p>
                     </div>
                     <div class="summary-card">
                         <h3>GST Collected</h3>
-                        <p id="report-gst">₹0</p>
+                        <p id="report-gst">₹0.00</p>
                     </div>
                     <div class="summary-card">
                         <h3>Purchase Cost</h3>
-                        <p id="report-purchase-cost">₹0</p>
+                        <p id="report-purchase-cost">₹0.00</p>
                     </div>
                     <div class="summary-card">
                         <h3>Total Profit</h3>
-                        <p id="report-profit">₹0</p>
+                        <p id="report-profit">₹0.00</p>
                     </div>
                 </div>
             
@@ -319,20 +321,21 @@
                     <table id="report-table">
                         <thead>
                             <tr>
-                                <th scope="col">Bill ID</th>
-                                <th scope="col">Customer Name</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Medicines</th>
-                                <th scope="col">Revenue</th>
-                                <th scope="col">GST</th>
-                                <th scope="col">Purchase Cost</th>
-                                <th scope="col">Profit</th>
+                                <th>Bill ID</th>
+                                <th>Customer Name</th>
+                                <th>Date</th>
+                                <th>Medicines</th>
+                                <th>Revenue</th>
+                                <th>GST</th>
+                                <th>Purchase Cost</th>
+                                <th>Profit</th>
                             </tr>
                         </thead>
                         <tbody id="report-table-body">
                             <tr>
-                                <td colspan="8" class="empty-cell">Select start month, end month and year, then click Generate
-                                    Report to view data.</td>
+                                <td colspan="8" style="text-align:center;padding:20px;">
+                                    Select start month, end month and year, then click Generate Report to view data.
+                                </td>
                             </tr>
                         </tbody>
                     </table>
