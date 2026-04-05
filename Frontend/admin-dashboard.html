@@ -283,49 +283,48 @@
                     <p id="report-period"></p>
                 </div>
 
-                <div id="report-section">
-                
-                    <div class="report-actions">
-                        <button type="button" class="report-btn pdf-btn" onclick="downloadReportPDF()">Download PDF</button>
-                        <button type="button" class="report-btn print-btn" onclick="printReport()">Print Report</button>
-                    </div>
-                
-                    <div class="report-summary-cards">
-                        <div class="summary-card">
-                            <!-- your summary -->
-                        </div>
-                    </div>
-                
-                    <!-- your table also here -->
-                
-                </div>
-
+            <div id="report-section">
+            
+                <h2>Medical Store Sales Report</h2>
+                <p id="report-period"></p>
+            
                 <div class="report-summary-cards">
                     <div class="summary-card">
                         <h3>Total Bills</h3>
                         <p id="report-total-bills">0</p>
                     </div>
-                    <div class="summary-card">
-                        <h3>Medicines Sold</h3>
-                        <p id="report-medicines-sold">0</p>
-                    </div>
+            
                     <div class="summary-card">
                         <h3>Revenue</h3>
                         <p id="report-revenue">₹0</p>
                     </div>
-                    <div class="summary-card">
-                        <h3>GST Collected</h3>
-                        <p id="report-gst">₹0</p>
-                    </div>
-                    <div class="summary-card">
-                        <h3>Purchase Cost</h3>
-                        <p id="report-purchase-cost">₹0</p>
-                    </div>
-                    <div class="summary-card highlight">
-                        <h3>Total Profit</h3>
-                        <p id="report-profit">₹0</p>
-                    </div>
                 </div>
+            
+                <div class="report-table-container">
+                    <table id="report-table">
+                        <thead>
+                            <tr>
+                                <th>Bill ID</th>
+                                <th>Customer Name</th>
+                                <th>Date</th>
+                                <th>Medicines</th>
+                                <th>Revenue</th>
+                                <th>GST</th>
+                                <th>Purchase Cost</th>
+                                <th>Profit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="report-table-body">
+                            <tr>
+                                <td colspan="8">No data</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            
+            </div>
+
+                
 
                 <div class="report-table-container">
                     <table id="report-table">
