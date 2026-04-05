@@ -140,8 +140,8 @@ async function apiDeleteRequest(id) {
 // }
 
 async function apiUpdateOrderStatus(id, status) {
-    return apiFetch(`/orders/${id}`, {
-        method: 'PATCH',
+    return apiFetch(`/orders/${id}/status`, {
+        method: 'PUT',
         headers: authHeaders(),
         body: JSON.stringify({ status })
     });
