@@ -21,19 +21,18 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
 
        const items = cart.map(item => ({
-     medicine_id: item.id,
-                medicine_name: item.name,
-                quantity: item.quantity,
-                unit_price: item.price
+   medicine_id: item.id,
+    medicine_name: item.name,
+    quantity: item.quantity,
+    unit_price: item.price
 }));
 
 try {
     await apiPlaceOrder({
-        customer_name: customerName,
-        phone: phone,
-        address: address,
-        items: items
-    });
+       customerName: customerName,  
+    phone: phone,
+    address: address,
+    medicines: items        });
 
     alert(`Order placed successfully! We will contact you at ${phone} shortly.`);
     cart = [];
