@@ -228,8 +228,11 @@
             </div>
 
             <!-- ── Report Filters ── -->
-            <div id="report-filters-section">
+            <!-- ── Reports Section ── -->
+            <div id="reports-section" class="section">
                 <h2>Generate Monthly Report</h2>
+            
+                <!-- Filters -->
                 <div class="report-filters">
                     <div class="filter-group">
                         <label for="report-start-month">Start Month:</label>
@@ -279,10 +282,8 @@
             
                     <button type="button" class="report-btn" onclick="generateMonthlyReport()">Generate Report</button>
                 </div>
-            </div>
             
-            <!-- ── Report Display ── -->
-            <div id="report-section">
+                <!-- Report Header -->
                 <div id="report-header" class="report-header report-header-hidden">
                     <h2>Medical Store Sales Report</h2>
                     <p id="report-period">Period: -</p>
