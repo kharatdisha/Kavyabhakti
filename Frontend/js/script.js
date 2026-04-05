@@ -32,7 +32,7 @@ try {
         customer_name: customerName,
         phone: phone,
         address: address,
-        medicines: items
+        items: items
     });
 
     alert(`Order placed successfully! We will contact you at ${phone} shortly.`);
