@@ -132,22 +132,30 @@ async function apiDeleteRequest(id) {
     });
 }
 
-async function apiGetOrders() {
-    return apiFetch('/orders', {
-        method: 'GET',
-        headers: authHeaders()
+// async function apiGetOrders() {
+//     return apiFetch('/orders', {
+//         method: 'GET',
+//         headers: authHeaders()
+//     });
+// }
+
+async function apiUpdateOrderStatus(id, status) {
+    return apiFetch(`/orders/${id}`, {
+        method: 'PATCH',
+        headers: authHeaders(),
+        body: JSON.stringify({ status })
     });
 }
 
 // Called when order status is changed from the dropdown
-async function updateOrderStatus(id, status) {
-    try {
-        await apiUpdateOrderStatus(id, status); // calls the API from api.js
-        alert('Order status updated successfully.');
-    } catch (err) {
-        console.error('Failed to update order status:', err);
-        alert('Failed to update order status.');
-    }
+async function apiPlaceOrder(orderData) {
+    return apiFetch('/orders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+    });
 }
 // 🌍 MAKE GLOBAL
 window.apiLogin = apiLogin;
@@ -166,4 +174,5 @@ window.apiGetOrders = apiGetOrders;
 window.apiGetRequests = apiGetRequests;
 window.apiUpdateRequestStatus = apiUpdateRequestStatus;
 window.apiDeleteRequest = apiDeleteRequest;
-window.updateOrderStatus = updateOrderStatus;
+// window.updateOrderStatus = updateOrderStatus;
+window.apiPlaceOrder = apiPlaceOrder;

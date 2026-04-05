@@ -20,23 +20,31 @@ document.addEventListener('DOMContentLoaded', async function () {
                 return;
             }
 
-            const items = cart.map(item => ({
-                medicine_id: item.id,
+       const items = cart.map(item => ({
+     medicine_id: item.id,
                 medicine_name: item.name,
                 quantity: item.quantity,
                 unit_price: item.price
-            }));
+}));
 
-            try {
-                await apiPlaceOrder({ customerName, phone, address, items });
-                alert(`Order placed successfully! We will contact you at ${phone} shortly.`);
-                cart = [];
-                updateCartCount();
-                closeOrderModal();
-                orderForm.reset();
-            } catch (err) {
-                alert('Failed to place order. Please try again.');
-            }
+try {
+    await apiPlaceOrder({
+        customer_name: customerName,
+        phone: phone,
+        address: address,
+        medicines: items
+    });
+
+    alert(`Order placed successfully! We will contact you at ${phone} shortly.`);
+    cart = [];
+    updateCartCount();
+    closeOrderModal();
+    orderForm.reset();
+
+} catch (err) {
+    console.error(err);
+    alert(err.message); 
+}
         });
     }
 
@@ -248,12 +256,12 @@ async function searchMedicines() {
 
 // ── Cart ──────────────────────────────────────────────
 function addToCart(medicine, quantity) {
-    const existing = cart.find(item => item.id === medicine.id);
+    const existing = cart.find(item => item.id ===medicine._id);
     if (existing) {
         existing.quantity += quantity;
     } else {
         cart.push({
-            id: medicine.id,
+            id: medicine._id,
             name: medicine.name,
             brand: medicine.brand,
             price: medicine.selling_price || medicine.price,

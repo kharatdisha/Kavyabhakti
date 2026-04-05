@@ -615,3 +615,13 @@ document.addEventListener('click', (e) => {
 // ── Export or continue adding Orders, Requests, Billing, Reports ─────────────
 // The rest of the code (orders, requests, billing, reports) can follow the same
 // modular pattern as above for readability and maintainability.
+
+async function apiPlaceOrder(orderData) {
+    return apiFetch('/orders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+    });
+}
