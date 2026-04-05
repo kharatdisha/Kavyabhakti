@@ -6,10 +6,10 @@ const { verifyToken } = require('../middleware/auth');
 
 // POST /api/orders - public
 router.post('/', async (req, res) => {
-    const { customerName, phone, address, items } = req.body;
+    const { customerName, phone, address, medicines  } = req.body;
 
-    if (!customerName || !phone || !items || items.length === 0)
-        return res.status(400).json({ error: 'Customer name, phone, and items are required.' });
+    if (!customerName || !phone || !medicines || medicines.length === 0)
+        return res.status(400).json({ error: 'Customer name, phone, and medicines are required.' });
 
     try {
         // Upsert customer
@@ -22,13 +22,12 @@ router.post('/', async (req, res) => {
             customer = await Customer.create({ name: customerName, phone, address: address || '' });
         }
 
-        const total = items.reduce((sum, item) => sum + (item.unit_price * item.quantity), 0);
-
+const total = medicines.reduce((sum, item) => sum + (item.unit_price * item.quantity), 0);
         const order = await Order.create({
             customer_id: customer._id,
             total_amount: total,
             status: 'Pending',
-            items: items.map(item => ({
+            items: medicines.map(item => ({
                 medicine_id: item.medicine_id,
                 medicine_name: item.medicine_name,
                 quantity: item.quantity,
