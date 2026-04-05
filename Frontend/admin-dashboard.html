@@ -227,14 +227,70 @@
                 </div>
             </div>
 
-            <!-- ── Reports ── -->
-            <!-- ── Reports ── -->
-            <!-- ── Report Section ── -->
+            <!-- ── Report Section with Filters ── -->
+            <div id="report-filters-section">
+                <h2>Generate Monthly Report</h2>
+                <div class="report-filters">
+                    <!-- Start Month -->
+                    <div class="filter-group">
+                        <label for="report-start-month">Start Month:</label>
+                        <select id="report-start-month">
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+            
+                    <!-- End Month -->
+                    <div class="filter-group">
+                        <label for="report-end-month">End Month:</label>
+                        <select id="report-end-month">
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+            
+                    <!-- Year -->
+                    <div class="filter-group">
+                        <label for="report-year">Year:</label>
+                        <select id="report-year">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                        </select>
+                    </div>
+            
+                    <!-- Generate Button -->
+                    <button type="button" class="report-btn" onclick="generateMonthlyReport()">Generate Report</button>
+                </div>
+            </div>
+            
+            <!-- ── Report Display Section ── -->
             <div id="report-section">
                 <h2>Medical Store Sales Report</h2>
-                <p id="report-period">Period: 02/2026 - 04/2026</p>
+                <p id="report-period">Period: -</p> <!-- JS will update period -->
             
-                <!-- Report Summary Cards -->
+                <!-- Summary Cards -->
                 <div class="report-summary-cards">
                     <div class="summary-card">
                         <h3>Total Bills</h3>
@@ -275,8 +331,8 @@
                         </thead>
                         <tbody id="report-table-body">
                             <tr>
-                                <td colspan="8" class="empty-cell">Select month and year, then click Generate Report to view data.
-                                </td>
+                                <td colspan="8" class="empty-cell">Select start month, end month and year, then click Generate
+                                    Report to view data.</td>
                             </tr>
                         </tbody>
                     </table>
