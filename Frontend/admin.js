@@ -636,6 +636,3 @@ async function apiPlaceRequest(requestData) {
         body: JSON.stringify(requestData)
     });
 }
-function printReport() {
-    window.print();
-}

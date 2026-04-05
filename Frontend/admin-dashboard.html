@@ -228,82 +228,37 @@
             </div>
 
             <!-- ── Reports ── -->
-            <div id="reports-section" class="section">
-                <h2>Monthly Reports</h2>
-
-                <div class="report-filters">
-                    <div class="filter-group">
-                        <label for="report-start-month">Start Month:</label>
-                        <select id="report-start-month">
-                            <option value="01">January</option>
-                            <option value="02">February</option>
-                            <option value="03">March</option>
-                            <option value="04">April</option>
-                            <option value="05">May</option>
-                            <option value="06">June</option>
-                            <option value="07">July</option>
-                            <option value="08">August</option>
-                            <option value="09">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
-                        </select>
+            <!-- ── Reports ── -->
+            <!-- ── Report Section ── -->
+            <div id="report-section">
+                <h2>Medical Store Sales Report</h2>
+                <p id="report-period">Period: 02/2026 - 04/2026</p>
+            
+                <!-- Report Summary Cards -->
+                <div class="report-summary-cards">
+                    <div class="summary-card">
+                        <h3>Total Bills</h3>
+                        <p id="report-total-bills">0</p>
                     </div>
-                    <div class="filter-group">
-                        <label for="report-end-month">End Month:</label>
-                        <select id="report-end-month">
-                            <option value="01">January</option>
-                            <option value="02">February</option>
-                            <option value="03">March</option>
-                            <option value="04">April</option>
-                            <option value="05">May</option>
-                            <option value="06">June</option>
-                            <option value="07">July</option>
-                            <option value="08">August</option>
-                            <option value="09">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
-                        </select>
+                    <div class="summary-card">
+                        <h3>Revenue</h3>
+                        <p id="report-revenue">₹0</p>
                     </div>
-                    <div class="filter-group">
-                        <label for="report-year">Year:</label>
-                        <select id="report-year">
-                            <option value="2024">2024</option>
-                            <option value="2025">2025</option>
-                            <option value="2026">2026</option>
-                            <option value="2027">2027</option>
-                        </select>
+                    <div class="summary-card">
+                        <h3>GST Collected</h3>
+                        <p id="report-gst">₹0</p>
                     </div>
-                    <button type="button" class="report-btn generate-report-btn" onclick="generateMonthlyReport()">Generate Report</button>
+                    <div class="summary-card">
+                        <h3>Purchase Cost</h3>
+                        <p id="report-purchase-cost">₹0</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Profit</h3>
+                        <p id="report-profit">₹0</p>
+                    </div>
                 </div>
-
-                <div class="report-header report-header-hidden" id="report-header">
-                    <h3 id="report-title">Medical Store Sales Report</h3>
-                    <p id="report-period"></p>
-                </div>
-    <p id="report-period"></p>
-    </div>
-    
-    <div id="report-section">
-    
-        <h2>Medical Store Sales Report</h2>
-        <p>Period: 02/2026 - 04/2026</p>
-    
-        <div class="report-summary-cards">
-            <!-- Total Bills, Revenue, etc -->
-        </div>
-    
-        <table>
-            <!-- FULL table here -->
-        </table>
-    
-    </div>
-    
-    <div class="report-summary-cards">
-        <div class="summary-card">
-            <h3>Totis it okay now
-
+            
+                <!-- Report Table -->
                 <div class="report-table-container">
                     <table id="report-table">
                         <thead>
@@ -320,19 +275,17 @@
                         </thead>
                         <tbody id="report-table-body">
                             <tr>
-                                <td colspan="8" class="empty-cell">Select month and year, then click Generate Report to view data.</td>
+                                <td colspan="8" class="empty-cell">Select month and year, then click Generate Report to view data.
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
-        </div>
-    </div>
-    <script src="js/api.js"></script>
-    <script src="admin.js"></script>
-    <script>
-        initDashboard();
-    </script>
-</body>
-</html>
+            
+            <!-- Scripts -->
+            <script src="js/api.js"></script>
+            <script src="admin.js"></script>
+            <script>
+                initDashboard();
+            </script>
