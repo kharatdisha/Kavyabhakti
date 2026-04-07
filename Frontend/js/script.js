@@ -63,8 +63,16 @@ try {
             }
 
             try {
-                await apiSubmitRequest({ customerName, phone, medicineName, quantity: parseInt(quantity) });
-                closeRequestModal();
+await apiPlaceRequest({
+    customerName,
+    phone,
+    medicines: [
+        {
+            medicine_name: medicineName,
+            quantity: parseInt(quantity)
+        }
+    ]
+});               closeRequestModal();
                 requestForm.reset();
                 const confirmation = document.getElementById('confirmation-message');
                 confirmation.style.display = 'block';

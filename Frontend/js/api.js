@@ -117,8 +117,8 @@ async function apiGetRequests() {
 
 // Update request status
 async function apiUpdateRequestStatus(id, status) {
-    return apiFetch(`/requests/${id}`, {
-        method: 'PATCH',
+    return apiFetch(`/requests/${id}/status`, {
+        method: 'PUT',
         headers: authHeaders(),
         body: JSON.stringify({ status })
     });

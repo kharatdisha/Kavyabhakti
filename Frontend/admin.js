@@ -627,12 +627,12 @@ async function apiPlaceOrder(orderData) {
 }
 
 // ✅ Place Medicine Request
-async function apiPlaceRequest(requestData) {
-    return apiFetch('/requests', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestData)
-    });
-}
+// async function apiPlaceRequest(requestData) {
+//     return apiFetch('/requests', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(requestData)
+//     });
+// }
