@@ -636,3 +636,45 @@ async function apiPlaceOrder(orderData) {
 //         body: JSON.stringify(requestData)
 //     });
 // }
+
+
+function printBill() {
+    const printContents = document.getElementById("invoice-area").innerHTML;
+
+    const newWindow = window.open('', '', 'width=900,height=650');
+
+    newWindow.document.write(`
+        <html>
+        <head>
+            <title>Invoice</title>
+            <style>
+                body { font-family: Arial; padding: 20px; }
+                h3 { margin-bottom: 10px; }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid #000; }
+                th, td { padding: 8px; text-align: left; }
+            </style>
+        </head>
+        <body>
+            ${printContents}
+        </body>
+        </html>
+    `);
+
+    newWindow.document.close();
+    newWindow.print();
+}
+
+function downloadPDF() {
+    const element = document.getElementById("invoice-area");
+
+    const opt = {
+        margin: 0.5,
+        filename: `Invoice_${new Date().getTime()}.pdf`,
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+}

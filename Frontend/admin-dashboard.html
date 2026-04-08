@@ -112,6 +112,7 @@
                 </div>
 
                 <div id="new-billing" class="billing-tab-content active">
+                    <div id="invoice-area">
                     <div class="billing-customer-info">
                         <div class="billing-header">
                             <h3>Create New Bill</h3>
@@ -202,7 +203,7 @@
                     <div class="billing-actions">
                         <button type="button" class="billing-btn generate-btn" onclick="generateBill()">Generate Bill</button>
                         <button type="button" class="billing-btn save-btn" onclick="saveBill()">Save Bill</button>
-                        <button type="button" class="billing-btn print-btn" onclick="printInvoice()">Print Invoice</button>
+                        <button type="button" class="billing-btn print-btn" onclick="printBill()">Print Invoice</button>
                         <button type="button" class="billing-btn download-btn" onclick="downloadPDF()">Download PDF</button>
                         <button type="button" class="billing-btn clear-btn" onclick="clearBillingForm()">Clear</button>
                     </div>
@@ -349,3 +350,4 @@
             <script>
                 initDashboard();
             </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
