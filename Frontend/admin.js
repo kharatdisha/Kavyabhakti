@@ -679,6 +679,12 @@ function printBill() {
     document.getElementById("print-customer-phone").innerText =
         document.getElementById("customer-phone").value;
 
+    document.getElementById("print-payment-method").innerText =
+         document.getElementById("payment-method").value;
+
+    document.getElementById("print-discount").innerText =
+         document.getElementById("discount").value || 0;
+
     const printContents = document.getElementById("invoice-area").innerHTML;
 
     const newWindow = window.open('', '', 'width=900,height=650');

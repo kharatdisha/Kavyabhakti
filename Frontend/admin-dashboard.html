@@ -116,7 +116,7 @@
                     <div id="invoice-area">
                     <div class="billing-customer-info">
                         <div class="billing-header">
-                            <h3>Create New Bill</h3>
+                            <h3>Kavyabhakti Medical Store</h3>
                             <div class="bill-details">
                                 <div class="bill-detail">
                                     <label>Bill ID:</label>
@@ -147,6 +147,7 @@
                                     <option value="UPI">UPI</option>
                                     <option value="Card">Card</option>
                                 </select>
+                                <span class="print-only">: <span id="print-payment-method"></span></span>
                             </div>
                         </div>
                     </div>
@@ -192,6 +193,7 @@
                         <div class="summary-row">
                             <span>Discount:</span>
                             <input type="number" id="discount" value="0" min="0" onchange="updateBillingSummary()">
+                            <span class="print-only">₹<span id="print-discount"></span></span>
                         </div>
                         <div class="summary-row">
                             <span>GST :</span>
