@@ -656,7 +656,7 @@ async function apiPlaceOrder(orderData) {
 
 function printBill() {
 
-    // Fill print-only fields
+    // Fill print fields
     document.getElementById("print-customer-name").innerText =
         document.getElementById("customer-name").value;
 
@@ -669,18 +669,15 @@ function printBill() {
     document.getElementById("print-discount").innerText =
         document.getElementById("discount").value || 0;
 
-    // 🔥 FIX: UPDATE QUANTITY INSIDE ACTUAL TABLE ROWS
-    document.querySelectorAll("#invoice-area .qty-input").forEach(input => {
+    // Quantity update (safe)
+    document.querySelectorAll(".qty-input").forEach(input => {
         let row = input.closest("tr");
         if (row) {
             let printQty = row.querySelector(".print-qty");
-            if (printQty) {
-                printQty.innerText = input.value || 1;
-            }
+            if (printQty) printQty.innerText = input.value || 1;
         }
     });
 
-    // NOW COPY CONTENT
     const printContents = document.getElementById("invoice-area").innerHTML;
 
     const newWindow = window.open('', '', 'width=900,height=650');
@@ -691,33 +688,12 @@ function printBill() {
             <title>Invoice</title>
             <style>
                 body { font-family: Arial; padding: 20px; }
-
-                input, button, select {
-                    display: none !important;
-                }
-
-                .no-print {
-                    display: none !important;
-                }
-
-                .print-only {
-                    display: inline !important;
-                    font-weight: bold;
-                }
-
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-
-                table, th, td {
-                    border: 1px solid #000;
-                }
-
-                th, td {
-                    padding: 8px;
-                    text-align: left;
-                }
+                input, button, select { display: none !important; }
+                .no-print { display: none !important; }
+                .print-only { display: inline !important; }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid #000; }
+                th, td { padding: 8px; text-align: left; }
             </style>
         </head>
         <body>
@@ -728,4 +704,7 @@ function printBill() {
 
     newWindow.document.close();
     newWindow.print();
+
+    // 🔥 IMPORTANT: RESET AFTER PRINT
+    clearBillingForm();
 }
