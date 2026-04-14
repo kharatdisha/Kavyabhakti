@@ -703,8 +703,11 @@ function printBill() {
     `);
 
     newWindow.document.close();
-    newWindow.print();
+newWindow.focus();
+newWindow.print();
 
-    // 🔥 IMPORTANT: RESET AFTER PRINT
+// 🔥 Wait a bit then reset bill
+setTimeout(() => {
     clearBillingForm();
+}, 300);
 }
