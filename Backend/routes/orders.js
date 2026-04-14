@@ -8,18 +8,30 @@ const { verifyToken } = require('../middleware/auth');
 router.post('/', async (req, res) => {
     const { customerName, phone, address, medicines  } = req.body;
 
-    if (!customerName || !phone || !medicines || medicines.length === 0)
-        return res.status(400).json({ error: 'Customer name, phone, and medicines are required.' });
+   if (!customerName || !phone || !medicines || medicines.length === 0)
+    return res.status(400).json({ error: 'Customer name, phone, and medicines are required.' });
+
+// ✅ Clean phone
+const cleanPhone = phone.trim();
+
+// ✅ Validate phone
+const phonePattern = /^[6-9][0-9]{9}$/;
+
+if (!phonePattern.test(cleanPhone)) {
+    return res.status(400).json({
+        error: 'Invalid phone number. Must be 10 digits starting with 6-9.'
+    });
+}
 
     try {
         // Upsert customer
-        let customer = await Customer.findOne({ phone });
+        let customer = await Customer.findOne({ phone: cleanPhone });
         if (customer) {
             customer.name = customerName;
             customer.address = address || '';
             await customer.save();
         } else {
-            customer = await Customer.create({ name: customerName, phone, address: address || '' });
+            customer = await Customer.create({ name: customerName, phone: cleanPhone, address: address || '' });
         }
 
 const total = medicines.reduce((sum, item) => sum + (item.unit_price * item.quantity), 0);
