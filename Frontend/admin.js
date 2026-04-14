@@ -467,32 +467,15 @@ function removeBillingItem(index) {
 }
 
 function updateBillingSummary() {
+    const subtotal = billingItems.reduce((s, i) => s + i.unit_price * i.quantity, 0);
+    const discount = parseFloat(document.getElementById('discount')?.value) || 0;
+    const gst = (subtotal - discount) * 0.05;
+    const final = subtotal - discount + gst;
 
-    let totalMedicines = 0;
-    let subtotal = 0;
-
-    billingItems.forEach(item => {
-
-        let qty = Number(item.quantity || 0);
-        let price = Number(item.price || 0);
-
-        totalMedicines += qty;
-        subtotal += qty * price;
-    });
-
-    document.getElementById("total-medicines").innerText = totalMedicines;
-
-    let discount = Number(document.getElementById("discount").value || 0);
-
-    let afterDiscount = subtotal - discount;
-    if (afterDiscount < 0) afterDiscount = 0;
-
-    let gst = afterDiscount * 0.05;
-    let finalTotal = afterDiscount + gst;
-
-    document.getElementById("subtotal").innerText = "₹" + subtotal.toFixed(2);
-    document.getElementById("gst").innerText = "₹" + gst.toFixed(2);
-    document.getElementById("final-total").innerText = "₹" + finalTotal.toFixed(2);
+    document.getElementById('total-medicines').textContent = billingItems.reduce((s, i) => s + i.quantity, 0);
+    document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+    document.getElementById('gst').textContent = `₹${gst.toFixed(2)}`;
+    document.getElementById('final-total').textContent = `₹${final.toFixed(2)}`;
 }
 function printReport() {
     const content = document.getElementById("report-section").innerHTML;
