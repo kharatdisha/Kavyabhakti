@@ -1199,3 +1199,23 @@ table th {
     color: #e67e22;
     font-weight: bold;
 }
+.print-only {
+    display: none;
+}
+
+/* Show only when printing */
+@media print {
+    .print-only {
+        display: inline !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    input,
+    select,
+    button {
+        display: none !important;
+    }
+}
