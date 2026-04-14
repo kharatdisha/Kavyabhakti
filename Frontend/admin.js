@@ -377,11 +377,39 @@ function initBillingDate() {
 function showBillingTab(tabId) {
     document.querySelectorAll('.billing-tab-content').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.billing-tab-btn').forEach(b => b.classList.remove('active'));
+
     document.getElementById(tabId).classList.add('active');
     event.target.classList.add('active');
-    if (tabId === 'billing-history') loadBillingHistory();
+
+    if (tabId === 'billing-history') {
+        loadBillingHistory();
+    }
+
+    if (tabId === 'new-billing') {
+        resetBillingUI();   // ✅ ADD THIS
+        initBillingDate();
+    }
 }
 
+function resetBillingUI() {
+    billingItems = [];
+
+    const tbody = document.getElementById('billing-table-body');
+    if (tbody) {
+        tbody.innerHTML = `
+            <tr class="empty-row">
+                <td colspan="7" class="empty-cell">
+                    No medicines added yet. Search and add medicines above.
+                </td>
+            </tr>
+        `;
+    }
+
+    updateBillingSummary();
+
+    document.getElementById('medicine-search-billing').value = '';
+    document.getElementById('medicine-suggestions').innerHTML = '';
+}
 async function searchMedicinesForBilling() {
     const query = document.getElementById('medicine-search-billing').value.trim();
     const suggestionsDiv = document.getElementById('medicine-suggestions');
