@@ -694,112 +694,25 @@ function getBillSnapshot() {
         final
     };
 }
-function fillPrintFields() {
-    document.getElementById("print-customer-name").innerText =
-        document.getElementById("customer-name").value || "-";
-
-    document.getElementById("print-customer-phone").innerText =
-        document.getElementById("customer-phone").value || "-";
-
-    document.getElementById("print-payment-method").innerText =
-        document.getElementById("payment-method").value || "-";
-
-    document.getElementById("print-discount").innerText =
-        document.getElementById("discount").value || "0";
-}
 function printBill() {
-fillPrintFields();
-    const bill = getBillSnapshot(); // ✅ IMPORTANT
+    const printContent = document.getElementById("print-area").innerHTML;
 
-    document.getElementById("print-customer-name").innerText =
-        document.getElementById("customer-name").value || "-";
+    const win = window.open("", "", "width=900,height=700");
 
-    document.getElementById("print-customer-phone").innerText =
-        document.getElementById("customer-phone").value || "-";
-
-    document.getElementById("print-payment-method").innerText =
-        document.getElementById("payment-method").value || "-";
-
-   document.getElementById("print-gst").innerText = bill.gst.toFixed(2);
-document.getElementById("print-discount").innerText = bill.discount;
-
-    const printContents = document.getElementById("invoice-area").innerHTML;
-
-    const newWindow = window.open('', '', 'width=900,height=650');
-
-    newWindow.document.write(`
+    win.document.write(`
         <html>
         <head>
             <title>Invoice</title>
             <style>
                 body { font-family: Arial; padding: 20px; }
-                table { width: 100%; border-collapse: collapse; }
-                table, th, td { border: 1px solid #000; }
-                th, td { padding: 8px; }
             </style>
         </head>
         <body>
-            ${printContents}
+            ${printContent}
         </body>
         </html>
     `);
 
-    newWindow.document.close();
-    newWindow.focus();
-    newWindow.print();
-
-    setTimeout(() => {
-        clearBillingForm();
-    }, 300);
-}
-
-function printBill() {
-
-    // fill print fields
-    document.getElementById("print-customer-name").innerText =
-        document.getElementById("customer-name").value || "-";
-
-    document.getElementById("print-customer-phone").innerText =
-        document.getElementById("customer-phone").value || "-";
-
-    document.getElementById("print-payment-method").innerText =
-        document.getElementById("payment-method").value || "-";
-
-    document.getElementById("print-discount").innerText =
-        document.getElementById("discount").value || 0;
-
-    // ✅ FIX THIS (IMPORTANT)
-    document.getElementById("print-gst").innerText =
-        document.getElementById("gst").innerText.replace("₹", "") || 0;
-
-    const printContents = document.getElementById("invoice-area").innerHTML;
-
-    const newWindow = window.open('', '', 'width=900,height=650');
-
-    newWindow.document.write(`
-        <html>
-        <head>
-            <title>Invoice</title>
-            <style>
-                body { font-family: Arial; padding: 20px; }
-                .no-print { display: none !important; }
-                .print-only { display: inline !important; }
-                table { width: 100%; border-collapse: collapse; }
-                table, th, td { border: 1px solid #000; }
-                th, td { padding: 8px; text-align: left; }
-            </style>
-        </head>
-        <body>
-            ${printContents}
-        </body>
-        </html>
-    `);
-
-    newWindow.document.close();
-    newWindow.focus();
-    newWindow.print();
-
-    setTimeout(() => {
-        clearBillingForm();
-    }, 300);
+    win.document.close();
+    win.print();
 }
