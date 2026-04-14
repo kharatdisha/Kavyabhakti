@@ -468,23 +468,29 @@ function removeBillingItem(index) {
 
 function updateBillingSummary() {
 
-    let qtyInputs = document.querySelectorAll(".qty-input");
-
     let totalMedicines = 0;
     let subtotal = 0;
 
-    qtyInputs.forEach(input => {
-        totalMedicines += Number(input.value || 0);
+    billingItems.forEach(item => {
+
+        let qty = Number(item.quantity || 0);
+        let price = Number(item.price || 0);
+
+        totalMedicines += qty;
+        subtotal += qty * price;
     });
 
     document.getElementById("total-medicines").innerText = totalMedicines;
 
     let discount = Number(document.getElementById("discount").value || 0);
 
-    let gst = subtotal * 0.05;
-    let finalTotal = subtotal + gst - discount;
+    let afterDiscount = subtotal - discount;
+    if (afterDiscount < 0) afterDiscount = 0;
 
-    document.getElementById("subtotal").innerText = "₹" + subtotal;
+    let gst = afterDiscount * 0.05;
+    let finalTotal = afterDiscount + gst;
+
+    document.getElementById("subtotal").innerText = "₹" + subtotal.toFixed(2);
     document.getElementById("gst").innerText = "₹" + gst.toFixed(2);
     document.getElementById("final-total").innerText = "₹" + finalTotal.toFixed(2);
 }
