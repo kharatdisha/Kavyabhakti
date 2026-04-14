@@ -135,7 +135,9 @@
                             </div>
                             <div class="form-group-billing">
                                 <label>Phone Number:</label>
-                                <input type="tel" id="customer-phone" placeholder="Enter phone number">
+                                <input type="tel" id="customer-phone" placeholder="Enter phone number" pattern="[6-9]{1}[0-9]{9}" maxlength="10"
+                                    required oninvalid="this.setCustomValidity('Enter valid 10 digit mobile number')"
+                                    oninput="this.setCustomValidity('')">
                             </div>
                             <div class="form-group-billing">
                                 <label>Payment Method:</label>

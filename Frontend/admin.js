@@ -463,13 +463,29 @@ function updateBillingSummary() {
 }
 
 async function saveBill() {
-    if (!billingItems.length) { alert('Add medicines first.'); return; }
+    if (!billingItems.length) { 
+        alert('Add medicines first.'); 
+        return; 
+    }
+
     const customerName = document.getElementById('customer-name').value.trim();
-    if (!customerName) { alert('Enter customer name.'); return; }
+    if (!customerName) { 
+        alert('Enter customer name.'); 
+        return; 
+    }
+
+    // ✅ Phone Validation Added
+    const phone = document.getElementById('customer-phone').value.trim();
+    const phonePattern = /^[6-9][0-9]{9}$/;
+
+    if (!phonePattern.test(phone)) {
+        alert('Enter valid 10 digit mobile number');
+        return;
+    }
 
     const billData = {
         customerName,
-        customerPhone: document.getElementById('customer-phone').value,
+        customerPhone: phone, // ✅ use validated phone
         paymentMethod: document.getElementById('payment-method').value,
         discount: parseFloat(document.getElementById('discount').value) || 0,
         items: billingItems
@@ -678,3 +694,7 @@ function downloadPDF() {
 
     html2pdf().set(opt).from(element).save();
 }
+
+document.getElementById("customer-phone").addEventListener("input", function () {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
