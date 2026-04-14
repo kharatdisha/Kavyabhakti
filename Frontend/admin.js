@@ -685,6 +685,15 @@ function printBill() {
     document.getElementById("print-discount").innerText =
          document.getElementById("discount").value || 0;
 
+    let qtyInputs = document.querySelectorAll(".qty-input");
+    let printQtys = document.querySelectorAll(".print-qty");
+
+    qtyInputs.forEach((input, index) => {
+        if (printQtys[index]) {
+            printQtys[index].innerText = input.value || 1;
+        }
+    });
+
     const printContents = document.getElementById("invoice-area").innerHTML;
 
     const newWindow = window.open('', '', 'width=900,height=650');
