@@ -533,6 +533,7 @@ async function loadBillingHistory() {
             row.innerHTML = `
                 <td>${bill.bill_number}</td>
                 <td>${bill.customer_name}</td>
+                <td>${bill.customer_phone || 'N/A'}</td>
                 <td>${formatDate(bill.billing_date)}</td>
                 <td>${medNames}</td>
                 <td>₹${bill.final_total}</td>

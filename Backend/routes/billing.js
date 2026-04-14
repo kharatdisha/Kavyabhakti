@@ -68,7 +68,13 @@ router.post('/', verifyToken, async (req, res) => {
 router.get('/', verifyToken, async (req, res) => {
     try {
         const bills = await Bill.find().sort({ billing_date: -1, createdAt: -1 });
-        res.json(bills);
+
+        const result = bills.map(bill => ({
+            ...bill.toObject(),
+            customer_phone: bill.customer_phone || 'N/A'
+        }));
+
+        res.json(result);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
