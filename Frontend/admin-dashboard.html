@@ -195,10 +195,14 @@
                             <input type="number" id="discount" value="0" min="0" onchange="updateBillingSummary()">
                             <span class="print-only">₹<span id="print-discount"></span></span>
                         </div>
-                        <div class="summary-row">
-                            <span>GST :</span>
-                            <span id="gst">₹0</span>
-                        </div>
+                    <div class="summary-row">
+                        <span>GST :</span>
+                        <span id="gst">₹0</span>
+                    
+                        <span class="print-only">
+                            ₹<span id="print-gst"></span>
+                        </span>
+                    </div>
                         <div class="summary-row total">
                             <span>Final Total:</span>
                             <span id="final-total">₹0</span>
