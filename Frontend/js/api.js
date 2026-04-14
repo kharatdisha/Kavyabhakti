@@ -167,6 +167,13 @@ async function apiPlaceRequest(requestData) {
         body: JSON.stringify(requestData)
     });
 }
+
+async function apiDeleteOrder(id) {
+    return apiFetch(`/orders/${id}`, {
+        method: 'DELETE',
+        headers: authHeaders()
+    });
+}
 // 🌍 MAKE GLOBAL
 window.apiLogin = apiLogin;
 window.apiGetMedicines = apiGetMedicines;
