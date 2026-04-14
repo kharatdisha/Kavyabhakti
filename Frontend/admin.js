@@ -467,54 +467,57 @@ function removeBillingItem(index) {
 }
 
 function updateBillingSummary() {
-    const subtotal = billingItems.reduce((s, i) => s + i.unit_price * i.quantity, 0);
-    const discount = parseFloat(document.getElementById('discount')?.value) || 0;
-    const gst = (subtotal - discount) * 0.05;
-    const final = subtotal - discount + gst;
 
-    document.getElementById('total-medicines').textContent = billingItems.reduce((s, i) => s + i.quantity, 0);
-    document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
-    document.getElementById('gst').textContent = `₹${gst.toFixed(2)}`;
-    document.getElementById('final-total').textContent = `₹${final.toFixed(2)}`;
-}
+    let qtyInputs = document.querySelectorAll(".qty-input");
 
-async function saveBill() {
-    if (!billingItems.length) { 
-        alert('Add medicines first.'); 
-        return; 
-    }
+    let totalMedicines = 0;
+    let subtotal = 0;
 
-    const customerName = document.getElementById('customer-name').value.trim();
-    if (!customerName) { 
-        alert('Enter customer name.'); 
-        return; 
-    }
+    qtyInputs.forEach(input => {
 
-    // ✅ Phone Validation Added
-    const phone = document.getElementById('customer-phone').value.trim();
-    const phonePattern = /^[6-9][0-9]{9}$/;
+        let row = input.closest("tr");
 
-    if (!phonePattern.test(phone)) {
-        alert('Enter valid 10 digit mobile number');
+        // skip invalid or empty rows
+        if (!row || row.classList.contains("empty-row") || !row.querySelector(".qty-input")) return;
+
+        let qty = Number(input.value || 0);
+        totalMedicines += qty;
+
+        // SAFE PRICE FETCH (Price per unit = 4th column)
+        let priceCell = row.querySelector("td:nth-child(4)");
+        let priceText = priceCell ? priceCell.innerText : "0";
+
+        let price = parseFloat(priceText.replace(/[₹,]/g, "")) || 0;
+
+        subtotal += qty * price;
+    });
+
+    // Update total medicines
+    document.getElementById("total-medicines").innerText = totalMedicines;
+
+    // If no medicines added → reset everything
+    if (totalMedicines === 0) {
+        document.getElementById("subtotal").innerText = "₹0.00";
+        document.getElementById("gst").innerText = "₹0.00";
+        document.getElementById("final-total").innerText = "₹0.00";
         return;
     }
 
-    const billData = {
-        customerName,
-        customerPhone: phone, // ✅ use validated phone
-        paymentMethod: document.getElementById('payment-method').value,
-        discount: parseFloat(document.getElementById('discount').value) || 0,
-        items: billingItems
-    };
+    // Discount
+    let discount = Number(document.getElementById("discount").value || 0);
 
-    try {
-        const result = await apiSaveBill(billData);
-        alert(`Bill ${result.billNumber} saved! Total: ₹${result.finalTotal}`);
-        clearBillingForm();
-        await renderMedicines();
-    } catch (err) {
-        alert('Failed to save bill: ' + err.message);
-    }
+    let afterDiscount = subtotal - discount;
+    if (afterDiscount < 0) afterDiscount = 0;
+
+    // GST (5%)
+    let gst = afterDiscount * 0.05;
+
+    let finalTotal = afterDiscount + gst;
+
+    // UI update
+    document.getElementById("subtotal").innerText = "₹" + subtotal.toFixed(2);
+    document.getElementById("gst").innerText = "₹" + gst.toFixed(2);
+    document.getElementById("final-total").innerText = "₹" + finalTotal.toFixed(2);
 }
 function printReport() {
     const content = document.getElementById("report-section").innerHTML;
@@ -672,6 +675,7 @@ async function apiPlaceOrder(orderData) {
 
 
 function printBill() {
+
     // Fill print-only fields
     document.getElementById("print-customer-name").innerText =
         document.getElementById("customer-name").value;
@@ -680,20 +684,23 @@ function printBill() {
         document.getElementById("customer-phone").value;
 
     document.getElementById("print-payment-method").innerText =
-         document.getElementById("payment-method").value;
+        document.getElementById("payment-method").value;
 
     document.getElementById("print-discount").innerText =
-         document.getElementById("discount").value || 0;
+        document.getElementById("discount").value || 0;
 
-    let qtyInputs = document.querySelectorAll(".qty-input");
-    let printQtys = document.querySelectorAll(".print-qty");
-
-    qtyInputs.forEach((input, index) => {
-        if (printQtys[index]) {
-            printQtys[index].innerText = input.value || 1;
+    // 🔥 FIX: UPDATE QUANTITY INSIDE ACTUAL TABLE ROWS
+    document.querySelectorAll("#invoice-area .qty-input").forEach(input => {
+        let row = input.closest("tr");
+        if (row) {
+            let printQty = row.querySelector(".print-qty");
+            if (printQty) {
+                printQty.innerText = input.value || 1;
+            }
         }
     });
 
+    // NOW COPY CONTENT
     const printContents = document.getElementById("invoice-area").innerHTML;
 
     const newWindow = window.open('', '', 'width=900,height=650');
@@ -705,7 +712,6 @@ function printBill() {
             <style>
                 body { font-family: Arial; padding: 20px; }
 
-                /* Hide unwanted things */
                 input, button, select {
                     display: none !important;
                 }
@@ -716,11 +722,22 @@ function printBill() {
 
                 .print-only {
                     display: inline !important;
+                    font-weight: bold;
                 }
 
-                table { width: 100%; border-collapse: collapse; }
-                table, th, td { border: 1px solid #000; }
-                th, td { padding: 8px; text-align: left; }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+
+                table, th, td {
+                    border: 1px solid #000;
+                }
+
+                th, td {
+                    padding: 8px;
+                    text-align: left;
+                }
             </style>
         </head>
         <body>
@@ -732,4 +749,3 @@ function printBill() {
     newWindow.document.close();
     newWindow.print();
 }
-
