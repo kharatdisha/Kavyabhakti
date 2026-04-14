@@ -15,7 +15,9 @@
     justify-content: space-between;
     font-size: 14px;
 }
-
+.print-only {
+    display: none;
+}
 /* Header */
 header {
     display: flex;
@@ -81,15 +83,78 @@ header nav ul li a.cart-btn {
 .pharmacy-info p {
     font-size: 20px;
     margin: 4px 0;
-    
-}
-
-.heading1 p{
-    font-size:24px;
-    margin:4px 0;
 }
 
 .heading1 p {
     font-size: 24px;
     margin: 4px 0;
+}
+
+.heading1 p {
+    font-size: 24px;
+    margin: 4px 0;
+}
+
+
+/* ===== PRINT FIX ===== */
+@media print {
+
+    .top-bar,
+    header,
+    .hero,
+    .hero-img,
+    .hero-text,
+    nav,
+    button,
+    .no-print,
+    #addMedicine,
+    #searchBox {
+        display: none !important;
+    }
+
+    table th:last-child,
+    table td:last-child {
+        display: none;
+    }
+
+    body {
+        margin: 20px;
+        color: black;
+        background: white;
+        font-size: 14px;
+    }
+
+    /* Hide inputs */
+    input {
+        display: none;
+    }
+
+    /* Show printed values */
+    .print-only {
+        display: inline;
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    table,
+    th,
+    td {
+        border: 1px solid black;
+    }
+
+    th,
+    td {
+        padding: 6px;
+        text-align: left;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
 }

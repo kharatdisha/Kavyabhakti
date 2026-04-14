@@ -133,12 +133,14 @@
                             <div class="form-group-billing">
                                 <label>Customer Name:</label>
                                 <input type="text" id="customer-name" placeholder="Enter customer name">
+                                <span id="print-customer-name" class="print-only"></span>
                             </div>
                             <div class="form-group-billing">
                                 <label>Phone Number:</label>
                                 <input type="tel" id="customer-phone" placeholder="Enter phone number" pattern="[6-9]{1}[0-9]{9}" maxlength="10"
                                     required oninvalid="this.setCustomValidity('Enter valid 10 digit mobile number')"
                                     oninput="this.setCustomValidity('')">
+                                    <span id="print-customer-phone" class="print-only"></span>
                             </div>
                             <div class="form-group-billing">
                                 <label>Payment Method:</label>
@@ -151,7 +153,7 @@
                         </div>
                     </div>
 
-                    <div class="medicine-selection">
+                <div class="medicine-selection no-print">
                         <h3>Add Medicines</h3>
                         <div class="medicine-search-box">
                             <input type="text" id="medicine-search-billing" placeholder="Search medicines by Name, Brand, or Category..." onkeyup="searchMedicinesForBilling()">
@@ -169,7 +171,7 @@
                                     <th scope="col">Price per Unit</th>
                                     <th scope="col">Expiry Date</th>
                                     <th scope="col">Total Price</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col" class="no-print">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="billing-table-body">
@@ -203,7 +205,7 @@
                         </div>
                     </div>
                     </div>
-                    <div class="billing-actions">
+                    <div class="billing-actions no-print">
                         <button type="button" class="billing-btn generate-btn" onclick="generateBill()">Generate Bill</button>
                         <button type="button" class="billing-btn save-btn" onclick="saveBill()">Save Bill</button>
                         <button type="button" class="billing-btn print-btn" onclick="printBill()">Print Invoice</button>
@@ -224,7 +226,7 @@
                                 <th scope="col">Medicines</th>
                                 <th scope="col">Total Amount</th>
                                 <th scope="col">Payment</th>
-                                <th scope="col">Actions</th>
+                                <th scope="col" class="no-print">Action</th>
                             </tr>
                         </thead>
                         <tbody id="billing-history-body"></tbody>
