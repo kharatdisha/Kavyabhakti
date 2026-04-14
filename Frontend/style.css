@@ -99,54 +99,73 @@ header nav ul li a.cart-btn {
 /* ===== PRINT FIX ===== */
 @media print {
 
+    /* Hide full UI */
     .top-bar,
     header,
     .hero,
-    .hero-img,
-    .hero-text,
     nav,
     button,
-    .no-print,
+    .billing-actions,
     .medicine-selection,
     .medicine-search-box,
-    .billing-actions {
+    .no-print {
         display: none !important;
-    }
-        #invoice-area>div:not(.billing-customer-info):not(.billing-table-container):not(.billing-summary) {
-            display: none !important;
-        }
-    .medicine-selection h3 {
-        display: none !important;
-    }
-    /* Remove Action column */
-    table th:last-child,
-    table td:last-child {
-        display: none;
     }
 
-    /* Clean page */
+    /* Hide everything inside invoice first */
+    #invoice-area * {
+        display: none !important;
+    }
+
+    /* Show required sections */
+    .billing-customer-info,
+    .billing-table-container,
+    .billing-summary {
+        display: block !important;
+    }
+
+    /* Show inner content properly */
+    .billing-customer-info * {
+        display: block !important;
+    }
+
+    .billing-table-container table {
+        display: table !important;
+    }
+
+    .billing-table-container th,
+    .billing-table-container td {
+        display: table-cell !important;
+    }
+
+    .billing-summary * {
+        display: block !important;
+    }
+
+    /* Remove Action column */
+    table th.no-print,
+    table td.no-print {
+        display: none !important;
+    }
+
+    /* Page styling */
     body {
         margin: 20px;
         color: black;
         background: white;
-        /* FIXED */
         font-size: 14px;
     }
 
-    /* Hide all inputs */
-    input {
-        display: none;
+    /* Hide inputs */
+    input,
+    select {
+        display: none !important;
     }
 
     /* Show printed values */
     .print-only {
-        display: inline;
+        display: inline !important;
         font-weight: bold;
-    }
-
-    /* Hide discount box */
-    .billing-summary input {
-        display: none;
     }
 
     /* Table styling */
