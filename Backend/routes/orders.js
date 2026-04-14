@@ -15,11 +15,11 @@ router.post('/', async (req, res) => {
 const cleanPhone = phone.trim();
 
 // ✅ Validate phone
-const phonePattern = /^[6-9][0-9]{9}$/;
+const phonePattern = /^[0-9]{10}$/;
 
 if (!phonePattern.test(cleanPhone)) {
     return res.status(400).json({
-        error: 'Invalid phone number. Must be 10 digits starting with 6-9.'
+        error: 'Invalid phone number. Must be 10 digits.'
     });
 }
 

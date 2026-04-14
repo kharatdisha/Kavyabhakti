@@ -7,19 +7,30 @@ const { verifyToken } = require('../middleware/auth');
 router.post('/', async (req, res) => {
     const { customerName, phone, medicines } = req.body;
 
-    if (!customerName || !phone || !medicines || medicines.length === 0)
-        return res.status(400).json({ error: 'All fields are required.' });
+   if (!customerName || !phone || !medicines || medicines.length === 0)
+    return res.status(400).json({ error: 'All fields are required.' });
 
-    try {
-        // take first medicine
-        const med = medicines[0];
+// ✅ Clean phone
+const cleanPhone = phone.trim();
 
-        await MedicineRequest.create({
-            customer_name: customerName,
-            phone,
-            medicine_name: med.medicine_name || med.name,
-            quantity: med.quantity || 1
-        });
+// ✅ Validate phone
+const phonePattern = /^[0-9]{10}$/;
+
+if (!phonePattern.test(cleanPhone)) {
+    return res.status(400).json({
+        error: 'Phone number must be exactly 10 digits.'
+    });
+}
+
+try {
+    const med = medicines[0];
+
+    await MedicineRequest.create({
+        customer_name: customerName,
+        phone: cleanPhone,   // ✅ FIXED
+        medicine_name: med.medicine_name || med.name,
+        quantity: med.quantity || 1
+    });
 
         res.status(201).json({ message: 'Request submitted successfully.' });
     } catch (err) {
