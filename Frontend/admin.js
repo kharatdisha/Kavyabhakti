@@ -296,14 +296,13 @@ async function deleteOrder(id) {
     if (!confirm('Are you sure you want to delete this order?')) return;
 
     try {
-        await apiDeleteOrder(id);   // API call
-        await renderOrders();       // refresh table
+        await apiDeleteOrder(id);
+        await renderOrders(); // 🔥 clean + reusable
     } catch (err) {
         console.error('Delete failed:', err);
         alert('Failed to delete order');
     }
 }
-
 async function updateOrderStatus(id, status) {
     try {
         await apiUpdateOrderStatus(id, status);
@@ -318,12 +317,18 @@ async function updateOrderStatus(id, status) {
     }
 }
 async function apiDeleteOrder(id) {
-    return fetch(`/api/orders/${id}`, {
+    const res = await fetch(`/api/orders/${id}`, {
         method: 'DELETE',
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
         }
     });
+
+    if (!res.ok) {
+        throw new Error('Delete failed');
+    }
+
+    return res;
 }
 
 // ── Requests Management ──────────────────────────────────────────────────────
