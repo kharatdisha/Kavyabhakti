@@ -256,7 +256,7 @@ async function renderOrders() {
 
         if (!orders || orders.length === 0) {
             tbody.innerHTML = `<tr>
-                <td colspan="5" style="text-align:center;">No orders found</td>
+                <td colspan="6" style="text-align:center;">No orders found</td>
             </tr>`;
             return;
         }
@@ -267,19 +267,22 @@ async function renderOrders() {
             ).join(', ');
 
             const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${order.customer_name || 'N/A'}</td>
-                <td>${order.phone || 'N/A'}</td>
-                <td>${order.address || 'N/A'}</td>
-                <td>${medList || 'N/A'}</td>
-                <td>
-                    <select onchange="updateOrderStatus('${order._id}', this.value)">
-                        ${['Pending','Confirmed','Delivered','Cancelled'].map(s =>
-                            `<option value="${s}" ${(order.status || 'Pending') === s ? 'selected' : ''}>${s}</option>`
-                        ).join('')}
-                    </select>
-                </td>
-            `;
+row.innerHTML = `
+    <td>${order.customer_name || 'N/A'}</td>
+    <td>${order.phone || 'N/A'}</td>
+    <td>${order.address || 'N/A'}</td>
+    <td>${medList || 'N/A'}</td>
+    <td>
+        <select onchange="updateOrderStatus('${order._id}', this.value)">
+            ${['Pending','Confirmed','Delivered','Cancelled'].map(s =>
+                `<option value="${s}" ${(order.status || 'Pending') === s ? 'selected' : ''}>${s}</option>`
+            ).join('')}
+        </select>
+    </td>
+    <td>
+        <button onclick="deleteOrder('${order._id}')" class="delete-btn">Delete</button>
+    </td>
+`;
             tbody.appendChild(row);
         });
 
