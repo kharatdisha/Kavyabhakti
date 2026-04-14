@@ -684,27 +684,22 @@ async function apiPlaceOrder(orderData) {
 
 function printBill() {
 
-    // Fill print fields
+    // fill print fields
     document.getElementById("print-customer-name").innerText =
-        document.getElementById("customer-name").value;
+        document.getElementById("customer-name").value || "-";
 
     document.getElementById("print-customer-phone").innerText =
-        document.getElementById("customer-phone").value;
+        document.getElementById("customer-phone").value || "-";
 
     document.getElementById("print-payment-method").innerText =
-        document.getElementById("payment-method").value;
+        document.getElementById("payment-method").value || "-";
 
     document.getElementById("print-discount").innerText =
         document.getElementById("discount").value || 0;
 
-    // Quantity update (safe)
-    document.querySelectorAll(".qty-input").forEach(input => {
-        let row = input.closest("tr");
-        if (row) {
-            let printQty = row.querySelector(".print-qty");
-            if (printQty) printQty.innerText = input.value || 1;
-        }
-    });
+    // ✅ FIX THIS (IMPORTANT)
+    document.getElementById("print-gst").innerText =
+        document.getElementById("gst").innerText.replace("₹", "") || 0;
 
     const printContents = document.getElementById("invoice-area").innerHTML;
 
@@ -716,7 +711,6 @@ function printBill() {
             <title>Invoice</title>
             <style>
                 body { font-family: Arial; padding: 20px; }
-                input, button, select { display: none !important; }
                 .no-print { display: none !important; }
                 .print-only { display: inline !important; }
                 table { width: 100%; border-collapse: collapse; }
@@ -731,11 +725,10 @@ function printBill() {
     `);
 
     newWindow.document.close();
-newWindow.focus();
-newWindow.print();
+    newWindow.focus();
+    newWindow.print();
 
-// 🔥 Wait a bit then reset bill
-setTimeout(() => {
-    clearBillingForm();
-}, 300);
+    setTimeout(() => {
+        clearBillingForm();
+    }, 300);
 }
