@@ -103,7 +103,7 @@ async function apiGetReport(startMonth, endMonth, year) {
 }
 
 async function apiGetOrders() {
-    return apiFetch('/orders', {
+    return apiFetch(`/orders?t=${Date.now()}`, {
         method: 'GET',
         headers: authHeaders()
     });
