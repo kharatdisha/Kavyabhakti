@@ -694,25 +694,54 @@ function getBillSnapshot() {
         final
     };
 }
+
 function printBill() {
-    const printContent = document.getElementById("print-area").innerHTML;
 
-    const win = window.open("", "", "width=900,height=700");
+    const bill = getBillSnapshot(); // ✅ IMPORTANT
 
-    win.document.write(`
+    document.getElementById("print-customer-name").innerText =
+        document.getElementById("customer-name").value || "-";
+
+    document.getElementById("print-customer-phone").innerText =
+        document.getElementById("customer-phone").value || "-";
+
+    document.getElementById("print-payment-method").innerText =
+        document.getElementById("payment-method").value || "-";
+
+    document.getElementById("print-discount").innerText =
+        bill.discount;
+
+    // ✅ FIXED GST (NO UI dependency)
+    document.getElementById("print-gst").innerText =
+        bill.gst.toFixed(2);
+
+    const printContents = document.getElementById("invoice-area").innerHTML;
+
+    const newWindow = window.open('', '', 'width=900,height=650');
+
+    newWindow.document.write(`
         <html>
         <head>
             <title>Invoice</title>
             <style>
                 body { font-family: Arial; padding: 20px; }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid #000; }
+                th, td { padding: 8px; }
             </style>
         </head>
         <body>
-            ${printContent}
+            ${printContents}
         </body>
         </html>
     `);
 
-    win.document.close();
-    win.print();
+    newWindow.document.close();
+    newWindow.focus();
+    newWindow.print();
+
+    setTimeout(() => {
+        clearBillingForm();
+    }, 300);
 }
+
