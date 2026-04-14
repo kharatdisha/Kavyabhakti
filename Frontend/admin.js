@@ -477,25 +477,20 @@ function updateBillingSummary() {
 
         let row = input.closest("tr");
 
-        // skip invalid or empty rows
-        if (!row || row.classList.contains("empty-row") || !row.querySelector(".qty-input")) return;
+        if (!row || row.classList.contains("empty-row")) return;
 
         let qty = Number(input.value || 0);
         totalMedicines += qty;
 
-        // SAFE PRICE FETCH (Price per unit = 4th column)
-        let priceCell = row.querySelector("td:nth-child(4)");
-        let priceText = priceCell ? priceCell.innerText : "0";
-
+        let priceText = row.querySelectorAll("td")[3]?.innerText || "0";
         let price = parseFloat(priceText.replace(/[₹,]/g, "")) || 0;
 
         subtotal += qty * price;
     });
 
-    // Update total medicines
     document.getElementById("total-medicines").innerText = totalMedicines;
 
-    // If no medicines added → reset everything
+    // reset if empty
     if (totalMedicines === 0) {
         document.getElementById("subtotal").innerText = "₹0.00";
         document.getElementById("gst").innerText = "₹0.00";
@@ -503,18 +498,14 @@ function updateBillingSummary() {
         return;
     }
 
-    // Discount
     let discount = Number(document.getElementById("discount").value || 0);
 
     let afterDiscount = subtotal - discount;
     if (afterDiscount < 0) afterDiscount = 0;
 
-    // GST (5%)
     let gst = afterDiscount * 0.05;
-
     let finalTotal = afterDiscount + gst;
 
-    // UI update
     document.getElementById("subtotal").innerText = "₹" + subtotal.toFixed(2);
     document.getElementById("gst").innerText = "₹" + gst.toFixed(2);
     document.getElementById("final-total").innerText = "₹" + finalTotal.toFixed(2);
