@@ -186,4 +186,5 @@ window.apiUpdateRequestStatus = apiUpdateRequestStatus;
 window.apiDeleteRequest = apiDeleteRequest;
 // window.updateOrderStatus = updateOrderStatus;
 window.apiPlaceOrder = apiPlaceOrder;
+window.apiDeleteOrder = apiDeleteOrder;
 window.apiPlaceRequest = apiPlaceRequest;

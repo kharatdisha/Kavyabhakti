@@ -290,6 +290,20 @@ row.innerHTML = `
         console.error('Failed to load orders:', err);
     }
 }
+
+// ✅ DELETE FUNCTION
+async function deleteOrder(id) {
+    if (!confirm('Are you sure you want to delete this order?')) return;
+
+    try {
+        await apiDeleteOrder(id);   // API call
+        await renderOrders();       // refresh table
+    } catch (err) {
+        console.error('Delete failed:', err);
+        alert('Failed to delete order');
+    }
+}
+
 async function updateOrderStatus(id, status) {
     try {
         await apiUpdateOrderStatus(id, status);
@@ -302,6 +316,14 @@ async function updateOrderStatus(id, status) {
         console.error(err);
         alert('Failed to update order status.');
     }
+}
+async function apiDeleteOrder(id) {
+    return fetch(`/api/orders/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+        }
+    });
 }
 
 // ── Requests Management ──────────────────────────────────────────────────────
