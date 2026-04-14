@@ -474,39 +474,17 @@ function updateBillingSummary() {
     let subtotal = 0;
 
     qtyInputs.forEach(input => {
-
-        let row = input.closest("tr");
-
-        if (!row || row.classList.contains("empty-row")) return;
-
-        let qty = Number(input.value || 0);
-        totalMedicines += qty;
-
-        let priceText = row.querySelectorAll("td")[3]?.innerText || "0";
-        let price = parseFloat(priceText.replace(/[₹,]/g, "")) || 0;
-
-        subtotal += qty * price;
+        totalMedicines += Number(input.value || 0);
     });
 
     document.getElementById("total-medicines").innerText = totalMedicines;
 
-    // reset if empty
-    if (totalMedicines === 0) {
-        document.getElementById("subtotal").innerText = "₹0.00";
-        document.getElementById("gst").innerText = "₹0.00";
-        document.getElementById("final-total").innerText = "₹0.00";
-        return;
-    }
-
     let discount = Number(document.getElementById("discount").value || 0);
 
-    let afterDiscount = subtotal - discount;
-    if (afterDiscount < 0) afterDiscount = 0;
+    let gst = subtotal * 0.05;
+    let finalTotal = subtotal + gst - discount;
 
-    let gst = afterDiscount * 0.05;
-    let finalTotal = afterDiscount + gst;
-
-    document.getElementById("subtotal").innerText = "₹" + subtotal.toFixed(2);
+    document.getElementById("subtotal").innerText = "₹" + subtotal;
     document.getElementById("gst").innerText = "₹" + gst.toFixed(2);
     document.getElementById("final-total").innerText = "₹" + finalTotal.toFixed(2);
 }
