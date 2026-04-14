@@ -133,14 +133,12 @@
                             <div class="form-group-billing">
                                 <label>Customer Name:</label>
                                 <input type="text" id="customer-name" placeholder="Enter customer name">
-                                <span id="print-customer-name" class="print-only"></span>
+                                <span class="print-only">: <span id="print-customer-name"></span></span>
                             </div>
                             <div class="form-group-billing">
                                 <label>Phone Number:</label>
-                                <input type="tel" id="customer-phone" placeholder="Enter phone number" pattern="[6-9]{1}[0-9]{9}" maxlength="10"
-                                    required oninvalid="this.setCustomValidity('Enter valid 10 digit mobile number')"
-                                    oninput="this.setCustomValidity('')">
-                                    <span id="print-customer-phone" class="print-only"></span>
+                                <input type="tel" id="customer-phone" placeholder="Enter phone number">
+                                <span class="print-only">: <span id="print-customer-phone"></span></span>
                             </div>
                             <div class="form-group-billing">
                                 <label>Payment Method:</label>

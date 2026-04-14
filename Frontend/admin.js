@@ -672,6 +672,13 @@ async function apiPlaceOrder(orderData) {
 
 
 function printBill() {
+    // Fill print-only fields
+    document.getElementById("print-customer-name").innerText =
+        document.getElementById("customer-name").value;
+
+    document.getElementById("print-customer-phone").innerText =
+        document.getElementById("customer-phone").value;
+
     const printContents = document.getElementById("invoice-area").innerHTML;
 
     const newWindow = window.open('', '', 'width=900,height=650');
@@ -682,7 +689,20 @@ function printBill() {
             <title>Invoice</title>
             <style>
                 body { font-family: Arial; padding: 20px; }
-                h3 { margin-bottom: 10px; }
+
+                /* Hide unwanted things */
+                input, button, select {
+                    display: none !important;
+                }
+
+                .no-print {
+                    display: none !important;
+                }
+
+                .print-only {
+                    display: inline !important;
+                }
+
                 table { width: 100%; border-collapse: collapse; }
                 table, th, td { border: 1px solid #000; }
                 th, td { padding: 8px; text-align: left; }
@@ -698,20 +718,3 @@ function printBill() {
     newWindow.print();
 }
 
-function downloadPDF() {
-    const element = document.getElementById("invoice-area");
-
-    const opt = {
-        margin: 0.5,
-        filename: `Invoice_${new Date().getTime()}.pdf`,
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-    };
-
-    html2pdf().set(opt).from(element).save();
-}
-
-document.getElementById("customer-phone").addEventListener("input", function () {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
