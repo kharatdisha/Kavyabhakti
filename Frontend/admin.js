@@ -524,6 +524,28 @@ function updateBillingSummary() {
     document.getElementById('gst').textContent = `₹${gst.toFixed(2)}`;
     document.getElementById('final-total').textContent = `₹${final.toFixed(2)}`;
 }
+async function saveBill() {
+    if (!billingItems.length) { alert('Add medicines first.'); return; }
+    const customerName = document.getElementById('customer-name').value.trim();
+    if (!customerName) { alert('Enter customer name.'); return; }
+
+    const billData = {
+        customerName,
+        customerPhone: document.getElementById('customer-phone').value,
+        paymentMethod: document.getElementById('payment-method').value,
+        discount: parseFloat(document.getElementById('discount').value) || 0,
+        items: billingItems
+    };
+
+    try {
+        const result = await apiSaveBill(billData);
+        alert(`Bill ${result.billNumber} saved! Total: ₹${result.finalTotal}`);
+        clearBillingForm();
+        await renderMedicines();
+    } catch (err) {
+        alert('Failed to save bill: ' + err.message);
+    }
+}
 function printReport() {
     const content = document.getElementById("report-section").innerHTML;
     const original = document.body.innerHTML;
