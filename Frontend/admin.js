@@ -696,10 +696,35 @@ function getBillSnapshot() {
 }
 
 function generateBill() {
-    if (!billingItems.length) { alert('Add medicines first.'); return; }
+
+    if (!billingItems.length) {
+        alert('Add medicines first.');
+        return;
+    }
+
     const customerName = document.getElementById('customer-name').value.trim();
-    if (!customerName) { alert('Enter customer name.'); return; }
+    if (!customerName) {
+        alert('Enter customer name.');
+        return;
+    }
+
+    const phone = document.getElementById("customer-phone").value.trim();
+
+    // ✅ Phone validation FIRST
+    if (phone.length !== 10) {
+        alert("Phone number must be exactly 10 digits");
+        return;
+    }
+
+    // ✅ Optional (better validation for Indian numbers)
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+        alert("Enter valid Indian phone number");
+        return;
+    }
+
+    // ✅ Now generate bill
     updateBillingSummary();
+
     alert('Bill generated. You can now Print or Save.');
 }
 
