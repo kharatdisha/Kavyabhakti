@@ -696,95 +696,82 @@ function getBillSnapshot() {
 }
 
 function printBill() {
+    if (!billingItems.length) { alert('No medicines added to bill.'); return; }
+
+    const customerName = document.getElementById("customer-name").value || "-";
+    const customerPhone = document.getElementById("customer-phone").value || "-";
+    const paymentMethod = document.getElementById("payment-method").value || "-";
+    const billId = document.getElementById("bill-id").textContent || "-";
+    const billingDate = document.getElementById("billing-date").textContent || "-";
 
     const bill = getBillSnapshot();
 
-    // ✅ Fill print-only values
-    document.getElementById("print-customer-name").innerText =
-        document.getElementById("customer-name").value || "-";
+    // Build medicine rows
+    const medicineRows = billingItems.map(item => `
+        <tr>
+            <td>${item.medicine_name}</td>
+            <td>${item.brand}</td>
+            <td>${item.quantity}</td>
+            <td>₹${item.unit_price.toFixed(2)}</td>
+            <td>${item.expiry_date || 'N/A'}</td>
+            <td>₹${(item.unit_price * item.quantity).toFixed(2)}</td>
+        </tr>
+    `).join('');
 
-    document.getElementById("print-customer-phone").innerText =
-        document.getElementById("customer-phone").value || "-";
-
-    document.getElementById("print-payment-method").innerText =
-        document.getElementById("payment-method").value || "-";
-
-    document.getElementById("print-discount").innerText =
-        bill.discount;
-
-    document.getElementById("print-gst").innerText =
-        bill.gst.toFixed(2);
-
-    // ✅ Clone invoice
-    const invoice = document.getElementById("invoice-area").cloneNode(true);
-
-    // 🔥 Remove inputs completely
-    invoice.querySelectorAll('input').forEach(input => input.remove());
-
-    // 🔥 Replace select with text
-    invoice.querySelectorAll('select').forEach(select => {
-        const span = document.createElement('span');
-        span.innerText = select.value;
-        select.parentNode.replaceChild(span, select);
-    });
-
-    // 🔥 Remove buttons
-    invoice.querySelectorAll('button').forEach(btn => btn.remove());
-
-    // 🔥 Remove all no-print elements
-    invoice.querySelectorAll('.no-print').forEach(el => el.remove());
-
-    // 🔥 Clean empty labels (like ":" leftovers)
-    invoice.querySelectorAll('.form-group-billing').forEach(group => {
-        const text = group.innerText.trim();
-        if (text === '' || text === ':') {
-            group.remove();
-        }
-    });
-
-    const printContents = invoice.innerHTML;
-
-    // ✅ Open print window
     const newWindow = window.open('', '', 'width=900,height=650');
 
     newWindow.document.write(`
         <html>
         <head>
-            <title>Invoice</title>
+            <title>Invoice - ${billId}</title>
             <style>
-                body { font-family: Arial; padding: 20px; }
-
-                h3 {
-                    text-align: center;
-                    margin-bottom: 10px;
-                }
-
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-
-                table, th, td {
-                    border: 1px solid #000;
-                }
-
-                th, td {
-                    padding: 8px;
-                    text-align: left;
-                }
-
-                .billing-summary {
-                    margin-top: 10px;
-                    font-weight: bold;
-                }
-
-                .total {
-                    font-size: 18px;
-                }
+                body { font-family: Arial, sans-serif; padding: 30px; color: #000; }
+                h2 { text-align: center; margin-bottom: 4px; }
+                .bill-meta { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 13px; }
+                .customer-info { margin-bottom: 16px; font-size: 14px; }
+                .customer-info p { margin: 4px 0; }
+                table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                th, td { border: 1px solid #000; padding: 8px; text-align: left; font-size: 13px; }
+                th { background: #f0f0f0; }
+                .summary { margin-top: 16px; float: right; width: 280px; font-size: 14px; }
+                .summary-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #ddd; }
+                .summary-row.total { font-weight: bold; font-size: 16px; border-top: 2px solid #000; border-bottom: none; margin-top: 4px; }
+                .footer { clear: both; margin-top: 40px; text-align: center; font-size: 12px; color: #555; }
             </style>
         </head>
         <body>
-            ${printContents}
+            <h2>Kavyabhakti Medical Store</h2>
+            <div class="bill-meta">
+                <span>Bill ID: <strong>${billId}</strong></span>
+                <span>Date: <strong>${billingDate}</strong></span>
+            </div>
+            <div class="customer-info">
+                <p><strong>Customer:</strong> ${customerName}</p>
+                <p><strong>Phone:</strong> ${customerPhone}</p>
+                <p><strong>Payment:</strong> ${paymentMethod}</p>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medicine Name</th>
+                        <th>Brand</th>
+                        <th>Qty</th>
+                        <th>Price/Unit</th>
+                        <th>Expiry</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${medicineRows}
+                </tbody>
+            </table>
+            <div class="summary">
+                <div class="summary-row"><span>Subtotal:</span><span>₹${bill.subtotal.toFixed(2)}</span></div>
+                <div class="summary-row"><span>Discount:</span><span>₹${bill.discount.toFixed(2)}</span></div>
+                <div class="summary-row"><span>GST (5%):</span><span>₹${bill.gst.toFixed(2)}</span></div>
+                <div class="summary-row total"><span>Final Total:</span><span>₹${bill.final.toFixed(2)}</span></div>
+            </div>
+            <div class="footer">Thank you for your purchase!</div>
         </body>
         </html>
     `);
@@ -793,9 +780,7 @@ function printBill() {
     newWindow.focus();
     newWindow.print();
 
-    // ✅ Clear after printing
     newWindow.onafterprint = () => {
-        clearBillingForm();
         newWindow.close();
     };
 }

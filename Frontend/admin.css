@@ -1204,45 +1204,82 @@ table th {
     display: none;
 }
 
-/* Print styles */
 @media print {
 
-    .print-only {
-        display: inline !important;
+    /* Show only invoice */
+    body * {
+        visibility: hidden;
     }
 
+    #invoice-area,
+    #invoice-area * {
+        visibility: visible;
+    }
+
+    #invoice-area {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    /* Hide unwanted UI */
+    .top-bar,
+    header,
+    nav,
+    button,
+    .billing-actions,
+    .medicine-selection,
+    .medicine-search-box,
     .no-print {
         display: none !important;
     }
 
+    /* Hide inputs */
     input,
-    select,
-    button {
+    select {
         display: none !important;
     }
 
-    /* Optional: clean layout */
+    /* Show printed values */
+    .print-only {
+        display: inline !important;
+        font-weight: bold;
+    }
+
+    /* Remove action column */
+    table th.no-print,
+    table td.no-print {
+        display: none !important;
+    }
+
+    /* Styling */
     body {
-        margin: 0;
-        padding: 10px;
+        margin: 20px;
+        color: black;
+        background: white;
+        font-size: 14px;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
+        margin-top: 10px;
     }
-}
 
-h3 {
-    text-align: center;
-    margin-bottom: 10px;
-}
+    table,
+    th,
+    td {
+        border: 1px solid black;
+    }
 
-.billing-summary {
-    margin-top: 10px;
-    font-weight: bold;
-}
+    th,
+    td {
+        padding: 6px;
+        text-align: left;
+    }
 
-.total {
-    font-size: 18px;
+    h2 {
+        text-align: center;
+    }
 }
