@@ -190,10 +190,15 @@
                             <span>Subtotal:</span>
                             <span id="subtotal">₹0</span>
                         </div>
-                        <div class="summary-row">
-                            <span>Discount:</span>
-                            <span class="print-only">₹<span id="print-discount"></span></span>
-                        </div>
+                    <div class="summary-row">
+                        <span>Discount:</span>
+                    
+                        <!-- ✅ THIS IS REQUIRED -->
+                        <input type="number" id="discount" value="0" min="0" onchange="updateBillingSummary()">
+                    
+                        <!-- For printing -->
+                        <span class="print-only">₹<span id="print-discount"></span></span>
+                    </div>
                        <div class="summary-row">
     <span>GST :</span>
     <span id="gst">₹0</span>

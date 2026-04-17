@@ -695,6 +695,14 @@ function getBillSnapshot() {
     };
 }
 
+function generateBill() {
+    if (!billingItems.length) { alert('Add medicines first.'); return; }
+    const customerName = document.getElementById('customer-name').value.trim();
+    if (!customerName) { alert('Enter customer name.'); return; }
+    updateBillingSummary();
+    alert('Bill generated. You can now Print or Save.');
+}
+
 function printBill() {
     if (!billingItems.length) { alert('No medicines added to bill.'); return; }
 
