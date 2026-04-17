@@ -1199,12 +1199,14 @@ table th {
     color: #e67e22;
     font-weight: bold;
 }
+/* Hide print-only content normally */
 .print-only {
     display: none;
 }
 
-/* Show only when printing */
+/* Print styles */
 @media print {
+
     .print-only {
         display: inline !important;
     }
@@ -1218,4 +1220,29 @@ table th {
     button {
         display: none !important;
     }
+
+    /* Optional: clean layout */
+    body {
+        margin: 0;
+        padding: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.billing-summary {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.total {
+    font-size: 18px;
 }
