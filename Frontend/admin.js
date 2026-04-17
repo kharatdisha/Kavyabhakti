@@ -697,8 +697,9 @@ function getBillSnapshot() {
 
 function printBill() {
 
-    const bill = getBillSnapshot(); // ✅ IMPORTANT
+    const bill = getBillSnapshot();
 
+    // ✅ Fill print-only values
     document.getElementById("print-customer-name").innerText =
         document.getElementById("customer-name").value || "-";
 
@@ -711,12 +712,39 @@ function printBill() {
     document.getElementById("print-discount").innerText =
         bill.discount;
 
-    // ✅ FIXED GST (NO UI dependency)
     document.getElementById("print-gst").innerText =
         bill.gst.toFixed(2);
 
-    const printContents = document.getElementById("invoice-area").innerHTML;
+    // ✅ Clone invoice
+    const invoice = document.getElementById("invoice-area").cloneNode(true);
 
+    // 🔥 Remove inputs completely
+    invoice.querySelectorAll('input').forEach(input => input.remove());
+
+    // 🔥 Replace select with text
+    invoice.querySelectorAll('select').forEach(select => {
+        const span = document.createElement('span');
+        span.innerText = select.value;
+        select.parentNode.replaceChild(span, select);
+    });
+
+    // 🔥 Remove buttons
+    invoice.querySelectorAll('button').forEach(btn => btn.remove());
+
+    // 🔥 Remove all no-print elements
+    invoice.querySelectorAll('.no-print').forEach(el => el.remove());
+
+    // 🔥 Clean empty labels (like ":" leftovers)
+    invoice.querySelectorAll('.form-group-billing').forEach(group => {
+        const text = group.innerText.trim();
+        if (text === '' || text === ':') {
+            group.remove();
+        }
+    });
+
+    const printContents = invoice.innerHTML;
+
+    // ✅ Open print window
     const newWindow = window.open('', '', 'width=900,height=650');
 
     newWindow.document.write(`
@@ -725,9 +753,34 @@ function printBill() {
             <title>Invoice</title>
             <style>
                 body { font-family: Arial; padding: 20px; }
-                table { width: 100%; border-collapse: collapse; }
-                table, th, td { border: 1px solid #000; }
-                th, td { padding: 8px; }
+
+                h3 {
+                    text-align: center;
+                    margin-bottom: 10px;
+                }
+
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+
+                table, th, td {
+                    border: 1px solid #000;
+                }
+
+                th, td {
+                    padding: 8px;
+                    text-align: left;
+                }
+
+                .billing-summary {
+                    margin-top: 10px;
+                    font-weight: bold;
+                }
+
+                .total {
+                    font-size: 18px;
+                }
             </style>
         </head>
         <body>
@@ -740,8 +793,9 @@ function printBill() {
     newWindow.focus();
     newWindow.print();
 
-    setTimeout(() => {
+    // ✅ Clear after printing
+    newWindow.onafterprint = () => {
         clearBillingForm();
-    }, 300);
+        newWindow.close();
+    };
 }
-
