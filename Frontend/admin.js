@@ -493,39 +493,36 @@ function removeBillingItem(index) {
     renderBillingTable();
     updateBillingSummary();
 }
-
 function updateBillingSummary() {
-    const subtotal = billingItems.reduce((s, i) => s + i.unit_price * i.quantity, 0);
-    const discount = parseFloat(document.getElementById('discount')?.value) || 0;
-    const gst = (subtotal - discount) * 0.05;
-    const final = subtotal - discount + gst;
 
-    document.getElementById('total-medicines').textContent = billingItems.reduce((s, i) => s + i.quantity, 0);
+    let subtotal = billingItems.reduce((s, i) => s + i.unit_price * i.quantity, 0);
+
+    let discount = parseFloat(document.getElementById('discount')?.value) || 0;
+
+    // ✅ Prevent discount > subtotal
+    if (discount > subtotal) {
+        discount = subtotal;
+        document.getElementById('discount').value = subtotal;
+    }
+
+    let taxableAmount = subtotal - discount;
+
+    // ✅ Prevent negative taxable
+    if (taxableAmount < 0) taxableAmount = 0;
+
+    let gst = taxableAmount * 0.05;
+
+    let final = taxableAmount + gst;
+
+    // ✅ Final safety
+    if (final < 0) final = 0;
+
+    document.getElementById('total-medicines').textContent =
+        billingItems.reduce((s, i) => s + i.quantity, 0);
+
     document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
     document.getElementById('gst').textContent = `₹${gst.toFixed(2)}`;
     document.getElementById('final-total').textContent = `₹${final.toFixed(2)}`;
-}
-async function saveBill() {
-    if (!billingItems.length) { alert('Add medicines first.'); return; }
-    const customerName = document.getElementById('customer-name').value.trim();
-    if (!customerName) { alert('Enter customer name.'); return; }
-
-    const billData = {
-        customerName,
-        customerPhone: document.getElementById('customer-phone').value,
-        paymentMethod: document.getElementById('payment-method').value,
-        discount: parseFloat(document.getElementById('discount').value) || 0,
-        items: billingItems
-    };
-
-    try {
-        const result = await apiSaveBill(billData);
-        alert(`Bill ${result.billNumber} saved! Total: ₹${result.finalTotal}`);
-        clearBillingForm();
-        await renderMedicines();
-    } catch (err) {
-        alert('Failed to save bill: ' + err.message);
-    }
 }
 function printReport() {
     const content = document.getElementById("report-section").innerHTML;
@@ -682,17 +679,19 @@ async function apiPlaceOrder(orderData) {
 // }
 
 function getBillSnapshot() {
-    const subtotal = billingItems.reduce((s, i) => s + i.unit_price * i.quantity, 0);
-    const discount = parseFloat(document.getElementById('discount').value) || 0;
-    const gst = (subtotal - discount) * 0.05;
-    const final = subtotal - discount + gst;
 
-    return {
-        subtotal,
-        discount,
-        gst,
-        final
-    };
+    let subtotal = billingItems.reduce((s, i) => s + i.unit_price * i.quantity, 0);
+    let discount = parseFloat(document.getElementById('discount').value) || 0;
+
+    if (discount > subtotal) discount = subtotal;
+
+    let taxableAmount = subtotal - discount;
+    if (taxableAmount < 0) taxableAmount = 0;
+
+    let gst = taxableAmount * 0.05;
+    let final = taxableAmount + gst;
+
+    return { subtotal, discount, gst, final };
 }
 
 function generateBill() {
