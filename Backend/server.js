@@ -10,9 +10,9 @@ require('./db');
 
 // CORS — allow only the configured frontend origin or any for testing
 app.use(cors({
-    origin: process.env.FRONTEND_URL || '*', // fallback for testing
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type','Authorization']
+  origin: "https://www.kavyabhaktipharma.site",
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type','Authorization']
 }));
 
 app.use(express.json());
